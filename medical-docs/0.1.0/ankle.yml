@@ -1,0 +1,6 @@
+name: ankle
+parent: default
+
+matches:
+  - trigger: ":hankle"
+    replace: "hello ankle"
