@@ -1,0 +1,56 @@
+name: common
+parent: default
+
+matches:
+  - trigger: "R"
+    replace: "right"
+    word: true
+
+  - trigger: "L"
+    replace: "left"
+    word: true
+
+  - trigger: "s"
+    replace: "seconds"
+    word: true
+
+  - trigger: "min"
+    replace: "minutes"
+    word: true
+
+  - trigger: "h"
+    replace: "hours"
+    word: true
+
+  - trigger: "d"
+    replace: "days"
+    word: true
+
+  - trigger: "w"
+    replace: "weeks"
+    word: true
+
+  - trigger: "m"
+    replace: "months"
+    word: true
+
+  - trigger: "y"
+    replace: "years"
+    word: true
+
+  # Dates
+  - trigger: ":date"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%m/%d/%Y"
+
+  - trigger: ":time"
+    replace: "{{mytime}}"
+    vars:
+      - name: mytime
+        type: date
+        params:
+          format: "%H:%M"

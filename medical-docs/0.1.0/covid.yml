@@ -1,0 +1,31 @@
+name: covid
+parent: default
+
+matches:
+  - trigger: ":covphone"
+    replace: |
+      COVID PHONE COMMUNICATION
+
+      Start Time: {{mytime}}
+
+      Reason for call:  In lieu of office visit due to COVID-19 concerns
+
+      Notes:
+      No travel
+      No contact with recent travellers or suspected COVID-19 cases.
+      No symptoms of COVID (cough, fever, shortness of breath, runny nose, or sore throat)
+      that is not related to a pre-existing illness or health condition
+      Recommended to continue social distancing.
+
+      Grateful for call.
+      End Time:
+    vars:
+    - name: mytime
+      type: match
+      params:
+        trigger: ":time"
+
+  - trigger: ":covsig"
+    replace: |
+      Please remember to practise social distancing.
+  
