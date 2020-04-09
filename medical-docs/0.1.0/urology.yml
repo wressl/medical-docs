@@ -1,0 +1,44 @@
+name: urology
+parent: default
+
+matches:
+  - trigger: ":delayedejac"
+    replace:  |
+     Subjective:
+       {{cc}} delayed ejaculation for the past DURATION
+       {{sp}} no difficulty with ejaculation with masturbation
+       {{sp}} no difficulty with ejaculation with partner
+       {{sp}} no history of anxiety
+       {{sp}} no seratonin enhancing drugs
+         Examples: 
+           SSRI, SNRI, Bupropion, TCAs, MAOIs
+           Anti-psychotics,
+           triptans, Carbamazepine, Valproic acid, Lithium
+           Opioids,
+           Metoclopramide, Ondansetron
+           Cyclobenzaprine, Dextromethorphan
+           LSD, ecstasy, cocaine, amphetamines       
+
+     Assessment:
+       {{ap}} Primary Delayed Ejaculation (likely at least partly secondary to serotonergic medication]
+       Primary delayed ejaculation is difficult to treat unless directly related to a medication.
+       If a medication cause is suspected, strategies include:
+       1) Switching SSRI to vilazodone (Viibryd) or low dose vortioxetine (Trintellix)
+       2) Switching SSRI to SNRI - duloxetine (cymbalta) or levomilnacipran (Fetzima) likely best
+       3) Adding mirtazapine (Remeron) or bupropion (Wellbutrin) to an SSRI
+
+       If not medication related, it is usually related to anxiety, and overcontrolling or obsessive personality traits.
+       Intensive counselling may be helpful.
+
+       Most men are able to find specific stimuli when alone that help them reach their particularly high ejaculation threshold.
+       Having their partner mimic these techniques may allow them to ejaculate with their partner. 
+
+       Finally, a stimulant  (eg Dexedrine 5-10mg) 1 hour before sexual activity may help. 
+       If this approach is effective, one should consider screening for ADHD.
+
+     Plan:
+       {{pp}} self refer to counselling
+       {{pp}} trial a medication switch to vilazodone (Viibryd) vortioxetine (Trintellix)  duloxetine (Cymbalta) levominacipran (Fetzima)]
+       {{pp}} trial adding mirtazapine (Remeron) bupropion (Wellbutrin)
+       {{pp}} trial dexedrine 5mg, taken one hour before sexual activity
+       {{pp}} follow-up within 1 month regarding effectiveness of treatment, sooner if concerns

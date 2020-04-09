@@ -10,7 +10,7 @@ matches:
     replace: "left"
     word: true
 
-  - trigger: "s"
+  - trigger: "sec"
     replace: "seconds"
     word: true
 
@@ -20,10 +20,6 @@ matches:
 
   - trigger: "h"
     replace: "hours"
-    word: true
-
-  - trigger: "d"
-    replace: "days"
     word: true
 
   - trigger: "w"
@@ -54,3 +50,39 @@ matches:
         type: date
         params:
           format: "%H:%M"
+
+  - trigger: ":phone"
+    word: true
+    replace:  |
+      PHONE COMMUNICATION
+      Reason for call: 
+      Notes:
+
+
+  - trigger: "lmom"
+    replace: "{{mytime}} Phoned but no answer. Left voice mail to call clinic when available."
+    word: true
+    vars:
+      - name: mytime
+        type: date
+        params:
+          format: "%H:%M"
+
+  - trigger: ":pain"
+    replace: |
+      The pain is located in 
+        and it radiates to 
+        The pain is associated with nausea vomitting sweating shortness of breath
+        It has been present for 
+        and started when
+        The symptoms are getting better  staying the same  getting worse
+        It is constant intermittent
+        The pain is better in the morning  evening  the same throughout the day
+        It usually occurs about X times a day
+        When it comes, each episode lasts for 
+        The character of the pain is 
+        The intensity is X out of 10 pain (where 10 is the worst pain imaginable)
+        The pain gets worse when 
+        The pain gets better when 
+        Treatments tried so far include 
+

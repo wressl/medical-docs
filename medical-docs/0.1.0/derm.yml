@@ -1,0 +1,21 @@
+name: derm
+parent: default
+
+matches:
+  - trigger: ":alopecia"
+    word: true
+    replace: |
+      {{sp}} hair loss at [location]
+      This problem started [duration]
+
+      {{sp}} smooth localized area of complete hair loss at [location]
+      {{sp}} negative hair pull test.
+      {{sp}} no inflammation or scarring.
+
+      Diagnosis:
+        Alopecia areata.
+
+      Management:
+        Referred to dermatology
+
+

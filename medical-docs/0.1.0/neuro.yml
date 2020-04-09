@@ -1,0 +1,62 @@
+name: neuro
+parent: default
+
+matches:
+  - trigger: ":neuroexam"
+    replace:  |
+      {{op}} normal level of conciousness
+        {{op}} normal exam of head, eyes, ears, nose and throat
+        {{op}} normal cranial nerve exam
+        {{op}} normal strength in upper and lower limbs
+        {{op}} normal deep tendon reflexes in upper and lower limbs
+        {{op}} normal cerebellar exam (including finger to nose, and alternating movements)
+        {{op}} normal gait, including heel to toe
+        {{op}} normal ability to retain balance with eyes closed (negative Rhomberg)
+
+  - trigger: ":neuroredflag"
+    replace:  |
+      {{sp}} no difficulty speaking (dysarthria)
+        {{sp}} no double vision (diplopia)
+        {{sp}} no difficulty swallowing (dysphagia)
+        {{sp}} no difficulty with precise movements like finger to nose (dysmetria)
+        {{sp}} no inability to perform rapid alternating movements (dysdiadochokinesia)
+
+
+  - trigger: ":bppv"
+    replace:  |
+      Subjective:
+        {{cc}} dizziness for the past DURATION
+        {{sp}} a feeling like the room is spinning
+        The sensation is intermittent, lasting for XX seconds
+        {{sp}} no identified triggers - no recent sickness or cold and no trauma.
+        It is associated with nausea
+        {{sp}} no other symptoms.
+
+        Red Flags:
+        {{neuroredflag}}
+
+      Objective:
+        {{neuroexam}}
+        {{op}} symptoms provoked by laying down quickly with head turned to one side (Dix hallpike)
+               Worse when turning to RIGHT, including dizziness, nausea, involuntary eye movements (nystagmus)
+
+      Assessment:
+        {{ap}} Benign Paroxysmal Peripheral Vertigo (BPPV)
+
+      Plan:
+        {{pp}} review the educational materials provided
+        {{pp}} attempt self-treatment according to hand out provided
+        {{pp}} consider physiotherapy if ineffective.
+        {{pp}} maintain adequate hydration.
+        {{pp}} use provided prescription (betahistine) to help with symptoms as needed
+
+    vars:
+      - name: neuroexam
+        type: match
+        params:
+          trigger: ":neuroexam"
+      - name: neuroredflag
+        type: match
+        params:
+          trigger: ":neuroredflag"
+
