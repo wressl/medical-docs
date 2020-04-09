@@ -2,6 +2,19 @@ name: common
 parent: default
 
 matches:
+  - trigger: "S:"
+    replace: "Subjective:"
+    word: true
+  - trigger: "O:"
+    replace: "Objective:"
+    word: true
+  - trigger: "A:"
+    replace: "Assessment:"
+    word: true
+  - trigger: "P:"
+    replace: "Plan:"
+    word: true
+
   - trigger: "R"
     replace: "right"
     word: true
