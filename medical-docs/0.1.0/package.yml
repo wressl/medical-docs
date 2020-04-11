@@ -3,6 +3,3 @@
 name: medical-docs
 parent: default
 
-matches:
-  - trigger: ":hmd"
-    replace: "hello medical docs"

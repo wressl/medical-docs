@@ -22,7 +22,7 @@ matches:
         {{sp}} no inability to perform rapid alternating movements (dysdiadochokinesia)
 
 
-  - trigger: ":bppv"
+  - trigger: ":vertigo"
     replace:  |
       Subjective:
         {{cc}} dizziness for the past DURATION

@@ -97,6 +97,68 @@ Macintosh-2:~ wressl$ x-ray
 
 Here is a list of all the current available expansions:
 
+Simple Abbreviations    | Expansion
+A:                      | Assessment:
+bmd                     | bone mineral density
+cp                      | chest pain
+cxr                     | chest X-ray
+fit test                | FIT test (colon cancer screen)
+h                       | hours
+L                       | Left
+llq                     | left lower abdomen
+luq                     | left upper abdomen
+m                       | months
+mammo                   | mammogram
+min                     | minutes
+O:                      | Objective:
+P:                      | Plan:
+R                       | Right
+rlq                     | right lower abdomen
+ruq                     | right upper abdomen
+S:                      | Subjective:
+sob                     | shortness of breath
+sec                     | seconds
+soboe                   | shortness of breath on exertion
+u/s                     | ultrasound
+w                       | weeks
+y                       | years
+ya                      | You are at home in
+yh                      | You have had
+ym                      | Your main concern today is
+yn                      | You have had no
+xr                      | x-ray
+
+Components              | Description
+:covidredflags          | Covid Red Flags
+:covidsig               | Covid Reminder To Social Distance
+:date                   | Current Date
+:hitsh                  | Hypothyroid Symptoms
+:lmom                   | Left message for patient
+:lotsh                  | Hyperthyroid Symptoms
+:neuroexam              | General Neurology Exam
+:neuroredflag           | Neurology Red Flags
+:pain                   | Pain History
+:time                   | Current Time
+
+
+Clinical Notes          | Description
+:ankle                  | Ankle Pain
+:back                   | Back Pain
+:covidmonitor           | Covid Monitoring
+:covidphone             | Covid Related Phone Call
+:covidrisk              | Covid Risk Assessment
+:delayedejac            | Delayed Ejaculation
+:hairloss               | Hair Loss
+:intro                  | Introductory Visit
+:phone                  | Basic phone call
+:strep                  | Strep Throat
+:urti                   | Upper Respiratory Tract Infection
+:uti                    | Urine Tract Infection
+:vertigo                | Vertigo
+
+
+
+
 
 ## Contributors
 If you are interested in becoming a contributor

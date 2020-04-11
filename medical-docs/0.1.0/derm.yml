@@ -2,20 +2,22 @@ name: derm
 parent: default
 
 matches:
-  - trigger: ":alopecia"
+  - trigger: ":hairloss"
     word: true
     replace: |
-      {{sp}} hair loss at [location]
-      This problem started [duration]
+     Subjective:
+      {{cc}} hair loss at [location] for the past DURATION
 
-      {{sp}} smooth localized area of complete hair loss at [location]
-      {{sp}} negative hair pull test.
-      {{sp}} no inflammation or scarring.
+     Objective:
+      {{op}} smooth localized area of complete hair loss at [location]
+      {{op}} negative hair pull test.
+      {{op}} no inflammation or scarring.
 
-      Diagnosis:
-        Alopecia areata.
+     Assessment:
+      {{ap}} Alopecia Areata.
 
-      Management:
-        Referred to dermatology
+     Plan:
+      A referral has been sent to dermatology
+
 
 

@@ -20,13 +20,13 @@ matches:
         {{op}} no decreased range of motion
         {{op}} no loss of feeling
         {{op}} no loss of circulation
-        
+
         {{op}} no significant tenderness at posterior edge or tip of the lateral malleous (3)
         {{op}} no significant tenderness at posterior edge or tip of the medial malleous  (4)
-        
+
         {{op}} no significant tenderness at the navicular bone (5)
         {{op}} no significant tenderness at the base of the 5th metatarsal (6)
-        
+
         {{op}} no other significant tenderness
         {{op}} no pain with passive gentle inversion
         {{op}} no pain with passive gentle eversion
@@ -39,8 +39,10 @@ matches:
 
       Assessment:
         {{ap}} a Right Left Lateral Medial ankle sprain
-        Based on the Ottawa Ankle Rules [malleolar pain with (1),(3) or (4)], we need to rule out an ankle fracture.
-        Based on the Ottawa Foot Rules  [midfoot pain with (1),(5), or (6)] we need to rule out a foot fracture.
+        Based on the Ottawa Ankle Rules
+           malleolar pain with (1),(3) or (4)], we need to rule out an ankle fracture.
+        Based on the Ottawa Foot Rules
+           midfoot pain with (1),(5), or (6)] we need to rule out a foot fracture.
 
       Plan:
         {{pp}} complete an xray of the ankle and foot

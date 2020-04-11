@@ -10,7 +10,7 @@ matches:
     replace: "Your main concern today is"
     word: true
 
-  - trigger: "y"
+  - trigger: "yh"
     replace: "You have had"
     word: true
 
