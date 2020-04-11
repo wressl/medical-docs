@@ -98,6 +98,7 @@ Macintosh-2:~ wressl$ x-ray
 Here is a list of all the current available expansions:
 
 Simple Abbreviations    | Expansion
+--------------          | ------------------
 A:                      | Assessment:
 bmd                     | bone mineral density
 cp                      | chest pain
@@ -129,6 +130,7 @@ yn                      | You have had no
 xr                      | x-ray
 
 Components              | Description
+--------------          | ------------------
 :covidredflags          | Covid Red Flags
 :covidsig               | Covid Reminder To Social Distance
 :date                   | Current Date
@@ -142,6 +144,7 @@ Components              | Description
 
 
 Clinical Notes          | Description
+--------------          | ------------------
 :ankle                  | Ankle Pain
 :back                   | Back Pain
 :covidmonitor           | Covid Monitoring
