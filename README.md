@@ -165,11 +165,11 @@ Clinical Notes          | Description
 
 ## Contributors
 If you are interested in becoming a contributor
-contact me by [email](wressl@gmail.com)
+contact me by [email](mailto:wressl@gmail.com)
 
 ## License
 
 medical-docs was created by Bill Ressl
 and is licensed under the [GPL-3.0 license](/LICENSE).
 If you decide to use the contents outside of espanso,
-contact me by [email](wressl@gmail.com)
+contact me by [email](mailto:wressl@gmail.com)
