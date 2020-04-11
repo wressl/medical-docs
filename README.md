@@ -23,6 +23,81 @@ interested individuals can collaborate to create a library that is
 likely to be more complete and useful than anything any individual
 can maintain on their own.
 
+## Installation
+
+1. Install [espanso](https://espanso.org)
+
+2. Install medical-docs package
+     `espanso install medical-docs`
+
+3. Add the following to your default.yml
+   Hint: found in the *Config* directory as listed by `espanso path`
+
+```yml
+# use clipboard to insert text
+# should be smoother operation unless your application can't accept
+# input from clipboard
+backend: "Clipboard"
+
+# global variables
+global_vars:
+  # your name to be included as appropriate
+  - name: "myname"
+    type: "dummy"
+    params:
+      echo: "Dr. Bill Ressl"
+
+  # Some prefixes to implement patient facing documentation
+  # chief complaint prefix: headache -> Your main concern today is headache
+  - name: "cc"
+    type: "dummy"
+    params:
+      echo: "Your main concern today is"
+  # symptom prefix: no headache -> You have no headache
+  - name: "sp"
+    type: "dummy"
+    params:
+      echo: "You have"
+  # symptom prefix: normal blood pressure -> You have normal blood pressure
+  - name: "op"
+    type: "dummy"
+    params:
+      echo: "You have"
+  # symptom prefix: strep throat -> Your most likely diagnosis is strep throat
+  - name: "ap"
+    type: "dummy"
+    params:
+      echo: "Based on today's assessment, the most likely diagnosis is"
+  # plan prefix: follow-up in 3 days -> You are recommended to follow-up in 3 days
+  - name: "pp"
+    type: "dummy"
+    params:
+      echo: "You are recommended to"
+```
+
+4. restart espanso
+```
+Macintosh-2:~ wressl$ espanso restart
+Daemon started correctly!
+```
+
+## Usage
+
+If the installation worked correctly, you should be able to start
+typing with auto-magical results.
+
+For example:
+```
+Macintosh-2:~ wressl$ xr
+```
+as soon as you hit `space`, turns into
+```
+Macintosh-2:~ wressl$ x-ray
+```
+
+Here is a list of all the current available expansions:
+
+
 ## Contributors
 If you are interested in becoming a contributor
 contact me by [email](wressl@gmail.com)
