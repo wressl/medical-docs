@@ -134,6 +134,8 @@ Components              | Description
 :covidredflags          | Covid Red Flags
 :covidsig               | Covid Reminder To Social Distance
 :date                   | Current Date
+:headachefu             | Headache Follow-up Precautions
+:headacheredflag        | Headache Red Flags
 :hitsh                  | Hypothyroid Symptoms
 :lmom                   | Left message for patient
 :lotsh                  | Hyperthyroid Symptoms
@@ -155,10 +157,12 @@ Clinical Notes          | Description
 :covidrisk              | Covid Risk Assessment
 :delayedejac            | Delayed Ejaculation
 :hairloss               | Hair Loss
+:headache               | Headache
 :insomnia               | Insomnia
 :intro                  | Introductory Visit
 :lowtest                | Low Testosterone
 :phone                  | Basic phone call
+:sti                    | STI concern
 :strep                  | Strep Throat
 :tremor                 | Tremor
 :urti                   | Upper Respiratory Tract Infection

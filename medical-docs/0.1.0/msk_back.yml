@@ -7,7 +7,7 @@ matches:
       Subjective:
         {{cc}} Upper Mid Low back pain for the past [duration]
 
-        Red flags: 
+        Red flags:
         {{sp}} no urinary or bowel incontinence or urinary retention
         {{sp}} no new weakness in legs
         {{sp}} no saddle anesthesia (numbness or tingling around genitalss, buttocks or inner thighs)
@@ -19,12 +19,12 @@ matches:
         {{sp}} no fever
         {{sp}} no feeling of being extremely unwell
         {{sp}} no abdo pain radiating into the back
-        
+
         {{pain}}
-        
+
         {{sp}} no urinary symptoms such as pain with urination, increased urinary frequency or urgency, blood in urine
-        {{sp}} no history of kidney stones      
-        {{sp}} no testicular pain 
+        {{sp}} no history of kidney stones
+        {{sp}} no testicular pain
         {{sp}} no pain radiating to the groin
         {{sp}} no history of MVA or high impact collision
         {{sp}} no history of straining such as heavy lifting
@@ -45,15 +45,15 @@ matches:
       Assessment:
         {{ap}} Mechanical Lower Back Pain
 
-      Plan: 
+      Plan:
         {{pp}} use Tylenol, Short term NSAID, topical diclofenac, short term Cyclobenzaprine before bed
         {{pp}} use heating pad or ice to help with symptoms
-        {{pp}} stay active and learn exercises that help strengthen and stretch your back. 
-        {{pp}} learn to lift using your legs instead of your back. 
+        {{pp}} stay active and learn exercises that help strengthen and stretch your back.
+        {{pp}} learn to lift using your legs instead of your back.
         {{pp}} avoid sitting or standing in the same position for too long.
         {{pp}} monitor for development of red flags as described above
         {{pp}} seek medical attention if the pain persists over 6 weeks, worsens, or new symptoms develop.
-        
+
     vars:
       - name: pain
         type: match
