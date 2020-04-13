@@ -137,10 +137,13 @@ Components              | Description
 :hitsh                  | Hypothyroid Symptoms
 :lmom                   | Left message for patient
 :lotsh                  | Hyperthyroid Symptoms
+:lowtestinfo            | Low Testosterone Related Info
 :neuroexam              | General Neurology Exam
 :neuroredflag           | Neurology Red Flags
 :pain                   | Pain History
+:sleephy                | Sleep Hygiene
 :time                   | Current Time
+:tremorinfo             | Tremor Related Info
 
 
 Clinical Notes          | Description
@@ -152,9 +155,12 @@ Clinical Notes          | Description
 :covidrisk              | Covid Risk Assessment
 :delayedejac            | Delayed Ejaculation
 :hairloss               | Hair Loss
+:insomnia               | Insomnia
 :intro                  | Introductory Visit
+:lowtest                | Low Testosterone
 :phone                  | Basic phone call
 :strep                  | Strep Throat
+:tremor                 | Tremor
 :urti                   | Upper Respiratory Tract Infection
 :uti                    | Urine Tract Infection
 :vertigo                | Vertigo
@@ -168,8 +174,14 @@ If you are interested in becoming a contributor
 contact me by [email](mailto:wressl@gmail.com)
 
 ## License
-
 medical-docs was created by Bill Ressl
 and is licensed under the [GPL-3.0 license](/LICENSE).
 If you decide to use the contents outside of espanso,
 contact me by [email](mailto:wressl@gmail.com)
+
+## Disclaimer
+The contents of this package is intended only for use by
+licensed medical professionals as a tool that may be helpful in their work.
+It is provided "as-is" without any guarantee of correctness or completeness.
+In particular, it should not be used to diagnose or treat any illness.
+
