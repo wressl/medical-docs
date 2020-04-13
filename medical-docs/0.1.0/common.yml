@@ -15,11 +15,35 @@ matches:
     replace: "Plan:"
     word: true
 
-  - trigger: "R"
+  - trigger: ":SOAP"
+    word: true
+    replace: |
+      Subjective:
+      Objective:
+      Assessment:
+      Plan:
+
+      Start Time: {{mytime}}
+      End Time:
+    vars:
+      - name: mytime
+        type: date
+        params:
+          format: "%H:%M"
+
+  - trigger: ":FIFE"
+    word: true
+    replace: |
+      Feelings: What are concerned most about? Specific fears or worries?
+      Ideas: What do you think might be going on?
+      Function: How has this affected you day to day? What have you given up?
+      Expectations: What do expect or hope I can do for you today?
+
+  - trigger: "Rt"
     replace: "right"
     word: true
 
-  - trigger: "L"
+  - trigger: "Lt"
     replace: "left"
     word: true
 
@@ -31,19 +55,19 @@ matches:
     replace: "minutes"
     word: true
 
-  - trigger: "h"
+  - trigger: "hr"
     replace: "hours"
     word: true
 
-  - trigger: "w"
+  - trigger: "wk"
     replace: "weeks"
     word: true
 
-  - trigger: "m"
+  - trigger: "mo"
     replace: "months"
     word: true
 
-  - trigger: "y"
+  - trigger: "yr"
     replace: "years"
     word: true
 

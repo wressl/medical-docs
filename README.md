@@ -104,16 +104,16 @@ bmd                     | bone mineral density
 cp                      | chest pain
 cxr                     | chest X-ray
 fit test                | FIT test (colon cancer screen)
-h                       | hours
-L                       | Left
+hr                      | hours
+Lt                      | Left
 llq                     | left lower abdomen
 luq                     | left upper abdomen
-m                       | months
+mo                      | months
 mammo                   | mammogram
 min                     | minutes
 O:                      | Objective:
 P:                      | Plan:
-R                       | Right
+Rt                      | Right
 rlq                     | right lower abdomen
 ruq                     | right upper abdomen
 S:                      | Subjective:
@@ -121,8 +121,8 @@ sob                     | shortness of breath
 sec                     | seconds
 soboe                   | shortness of breath on exertion
 u/s                     | ultrasound
-w                       | weeks
-y                       | years
+wk                      | weeks
+yr                      | years
 ya                      | You are at home in
 yh                      | You have had
 ym                      | Your main concern today is
@@ -134,6 +134,7 @@ Components              | Description
 :covidredflags          | Covid Red Flags
 :covidsig               | Covid Reminder To Social Distance
 :date                   | Current Date
+:FIFE                   | Feelings, Ideas, Function, Expectations
 :headachefu             | Headache Follow-up Precautions
 :headacheredflag        | Headache Red Flags
 :hitsh                  | Hypothyroid Symptoms
@@ -162,6 +163,7 @@ Clinical Notes          | Description
 :intro                  | Introductory Visit
 :lowtest                | Low Testosterone
 :phone                  | Basic phone call
+:SOAP                   | Basic SOAP note
 :sti                    | STI concern
 :strep                  | Strep Throat
 :tremor                 | Tremor
