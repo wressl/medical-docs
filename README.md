@@ -143,8 +143,11 @@ Components              | Description
 :lowtestinfo            | Low Testosterone Related Info
 :neuroexam              | General Neurology Exam
 :neuroredflag           | Neurology Red Flags
+:OLDCARTS               | Pain History Acronym
 :pain                   | Pain History
+:PQRST                  | Pain History Acronym
 :sleephy                | Sleep Hygiene
+:SOCRATES               | Pain History Acronym
 :time                   | Current Time
 :tremorinfo             | Tremor Related Info
 
@@ -163,17 +166,15 @@ Clinical Notes          | Description
 :intro                  | Introductory Visit
 :lowtest                | Low Testosterone
 :phone                  | Basic phone call
+:skininfection          | Skin infection
 :SOAP                   | Basic SOAP note
 :sti                    | STI concern
 :strep                  | Strep Throat
+:strepphone             | Strep Throat Positive Phonecall
 :tremor                 | Tremor
 :urti                   | Upper Respiratory Tract Infection
 :uti                    | Urine Tract Infection
 :vertigo                | Vertigo
-
-
-
-
 
 ## Contributors
 If you are interested in becoming a contributor

@@ -121,5 +121,48 @@ matches:
         The intensity is X out of 10 pain (where 10 is the worst pain imaginable)
         The pain gets worse when 
         The pain gets better when 
-        Treatments tried so far include 
+        Treatments tried so far include
+
+  - trigger: ":PQRST"
+    word: true
+    replace: |
+      Provokes, palliates - What causes the pain?
+                   What makes it better or worse?
+      Quality - What exactly is it like? (stinging, dull, sharp, burning, crushing)
+      Radiation - Is the pain focal or does it spread anywhere?
+      Severity - How severe is it? (scale 1 - 10)
+                 How much does it affect your life?
+      TIming - Is it there all the time or does it come and go?
+               When does it start and how long does it last?
+               When was the last pain medication?
+
+  - trigger: ":OLDCARTS"
+    word: true
+    replace: |
+      Onset:
+      Location:
+      Duration:
+      Characteristic:
+      Aggravating Factors:
+      Relieving Factors:
+      Therapies Tried:
+      Severity:
+
+  - trigger: ":SOCRATES"
+    word: true
+    replace: |
+      Site:
+      Onset:
+      Character:
+      Radiates:
+      Associated Symptoms:
+      Time/duration:
+      Exacerbating/relieving factors:
+      Severity:
+
+
+
+
+
+
 
