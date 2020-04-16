@@ -101,7 +101,7 @@ Simple Abbreviations    | Expansion
 --------------          | ------------------
 A:                      | Assessment:
 bmd                     | bone mineral density
-cp                      | chest pain
+:cp                     | chest pain
 cxr                     | chest X-ray
 fit test                | FIT test (colon cancer screen)
 hr                      | hours

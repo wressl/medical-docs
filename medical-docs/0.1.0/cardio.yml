@@ -2,7 +2,7 @@ name: cardio
 parent: default
 
 matches:
-  - trigger: "cp"
+  - trigger: ":cp"
     replace: "chest pain"
     propagate_case: true
     word: true
