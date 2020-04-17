@@ -1,0 +1,24 @@
+name: psych
+parent: default
+
+matches:
+  - trigger: ":mse"
+    word: true
+    replace: |
+      Mental Status Exam:
+        {{op}} casual dress, normal grooming and hygiene
+        {{op}} calm and cooperative
+        {{op}} no unusual movements or psychomotor changes
+        {{op}} normal rate, tone, and volume of speech without pressure
+        {{op}} normal range of emotional expression (affect)
+        {{op}} normal stated mood (euthymic)
+        {{op}} goal directed and logical thought processes
+        {{op}} thought content free of delusions and fixations
+        {{op}} no suicidal or homocidal thoughts
+        {{op}} no hallucinations during interview
+        {{op}} orientation to time, place, and person intact
+        {{op}} normal memory and attention
+        {{op}} good insight and judgement
+
+
+

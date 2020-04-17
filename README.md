@@ -141,6 +141,7 @@ Components              | Description
 :lmom                   | Left message for patient
 :lotsh                  | Hyperthyroid Symptoms
 :lowtestinfo            | Low Testosterone Related Info
+:mse                    | Mental Status Exam
 :neuroexam              | General Neurology Exam
 :neuroredflag           | Neurology Red Flags
 :OLDCARTS               | Pain History Acronym
@@ -156,6 +157,7 @@ Clinical Notes          | Description
 --------------          | ------------------
 :ankle                  | Ankle Pain
 :back                   | Back Pain
+:chestpain              | Chest pain
 :covidmonitor           | Covid Monitoring
 :covidphone             | Covid Related Phone Call
 :covidrisk              | Covid Risk Assessment
