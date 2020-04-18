@@ -71,6 +71,152 @@ matches:
     replace: "years"
     word: true
 
+  - trigger: ":myn"
+    replace: "{{myname}}"
+    word: true
+
+  - trigger: ":mycl"
+    replace: "{{cname}}"
+    word: true
+
+  - trigger: ":myem"
+    replace: "{{myemail}}"
+    word: true
+
+  - trigger: ":myph"
+    replace: "{{myphone}}"
+    word: true
+
+  - trigger: "labreq"
+    replace: "Laboratory Requistion"
+    word: true
+
+  - trigger: "prn"
+    replace: "as needed"
+    word: true
+
+  - trigger: "rx"
+    replace: "prescription"
+    word: true
+
+  - trigger: "rxhld"
+    replace: "Please do not fill until requested by patient"
+    word: true
+
+  - trigger: "pf"
+    replace: "puffs"
+    word: true
+
+  - trigger: ":od"
+    replace: "once daily"
+    word: true
+
+  - trigger: ":bid"
+    replace: "twice daily"
+    word: true
+
+  - trigger: ":tid"
+    replace: "three times daily"
+    word: true
+
+  - trigger: ":qid"
+    replace: "four times daily"
+    word: true
+
+  - trigger: ":qhs"
+    replace: "at bed-time"
+    word: true
+
+  - trigger: "bp"
+    replace: "blood pressure"
+    word: true
+
+  - trigger: ":temp"
+    replace: "temperature"
+    word: true
+
+  - trigger: "appt"
+    replace: "appointment"
+    word: true
+
+  - trigger: "wic"
+    replace: "walk-in clinic"
+    word: true
+
+  - trigger: "fp"
+    replace: "Family Physician"
+    word: true
+
+  - trigger: ":fufp"
+    replace: "{{pp}} follow-up with your regular Family Physician."
+    word: true
+
+  - trigger: "amit"
+    replace: "Amitriptyline (Elavil)"
+    word: true
+
+  - trigger: "nort"
+    replace: "Nortriptyline (Avantyl)"
+    word: true
+
+  - trigger: "valt"
+    replace: "Valacyclovir (Valtrex)"
+    word: true
+
+  - trigger: "vrx"
+    replace: "2-4 puffs four times daily as needed"
+    word: true
+
+  - trigger: "ocp"
+    replace: "oral contraceptive pill"
+    word: true
+
+  - trigger: "bcp"
+    replace: "birth control pill"
+    word: true
+
+  - trigger: "lmp"
+    replace: "last menstrual period (LMP)"
+    word: true
+
+  - trigger: "otc"
+    replace: "over-the-counter"
+    word: true
+
+  - trigger: "ds"
+    replace: "drug-store"
+    word: true
+
+  - trigger: "pn"
+    replace: "BC PharmaNet"
+    word: true
+
+  - trigger: "nc"
+    replace: "Alberta Netcare"
+    word: true
+
+  - trigger: "oeph"
+    replace: "On examination of the photo provided, "
+    word: true
+
+  - trigger: ":life"
+    word: true
+    replace: |
+      {{pp}} set a regular time to bed and to wake even on days off
+      {{pp}} set regular meal times, eating a variety of non-processed foods
+      {{pp}} get regular physical exercise, aiming for at least 30 minutes per day, 5 days per week
+      {{pp}} reduce or eliminate use of substances, including alcohol
+      Guidelines suggest a maximum 2 drinks/day and 10 drinks/week for women and 3 drinks/day and 15 drinks/week for men.
+      {{pp}} keep up with your hobbies
+      {{pp}} invest time in friendships and social contacts
+      {{pp}} maintain your connection to spirituality and personal values
+
+  - trigger: ":snet"
+    word: true
+    replace: |
+      {{pp}} book for follow-up if worsening or new symptoms
+
+
   # Dates
   - trigger: ":date"
     replace: "{{mydate}}"

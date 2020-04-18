@@ -2,6 +2,10 @@ name: covid
 parent: default
 
 matches:
+  - trigger: "cv"
+    replace: "COVID-19"
+    word: true
+
   - trigger: ":covidphone"
     replace: |
       COVID PHONE COMMUNICATION

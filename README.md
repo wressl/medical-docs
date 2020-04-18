@@ -41,11 +41,23 @@ backend: "Clipboard"
 
 # global variables
 global_vars:
+  # clinic name to be included as appropriate
+  - name: "cname"
+    type: "dummy"
+    params:
+      echo: "My Clinic Name"
+
   # your name to be included as appropriate
   - name: "myname"
     type: "dummy"
     params:
       echo: "Dr. Bill Ressl"
+
+  # your email to be included as appropriate
+  - name: "myemail"
+    type: "dummy"
+    params:
+      echo: "wressl@gmail.com"
 
   # Some prefixes to implement patient facing documentation
   # chief complaint prefix: headache -> Your main concern today is headache
@@ -100,33 +112,75 @@ Here is a list of all the current available expansions:
 Simple Abbreviations    | Expansion
 --------------          | ------------------
 A:                      | Assessment:
+amit                    | Amitriptyline (Elavil)
+appt                    | appointment
+bcp                     | birth control pill
+:bid                    | twice daily
 bmd                     | bone mineral density
+bp                      | blood pressure
 :cp                     | chest pain
+cpl                     | Please copy the following link into your browser:
+cv                      | COVID-19
 cxr                     | chest X-ray
+ds                      | drug-store
 fit test                | FIT test (colon cancer screen)
+fp                      | Family Physician
 hr                      | hours
+labreq                  | Laboratory Requisition
 Lt                      | Left
 llq                     | left lower abdomen
+lmp                     | last menstrual period
 luq                     | left upper abdomen
 mo                      | months
 mammo                   | mammogram
 min                     | minutes
+:mycl                   | your clinic name
+:myem                   | your email address
+:myn                    | your name
+:myph                   | your phone number
+nc                      | Alberta Netcare
+nort                    | Nortriptyline (Avantyl)
 O:                      | Objective:
+ocp                     | oral contraceptive pill
+:od                     | once daily
+oeph                    | On examination of the photo provided,
+otc                     | over-the-counter
 P:                      | Plan:
+pf                      | puffs
+pn                      | BC PharmaNet
+prn                     | as needed
+:qhs                    | at bed-time
+:qid                    | four times daily
 Rt                      | Right
 rlq                     | right lower abdomen
 ruq                     | right upper abdomen
+rx                      | prescription
+rxhld                   | Please do not fill until requested by patient
 S:                      | Subjective:
 sob                     | shortness of breath
 sec                     | seconds
 soboe                   | shortness of breath on exertion
+:temp                   | temperature
+:tid                    | three times daily
+trx                     | Please take medication(s) prescribed as directed
 u/s                     | ultrasound
+valt                    | Valacyclovir (Valtrex)
+vrx                     | 2-4 puffs four times daily as needed
+vutd                    | vaccinations are up to date 
+wic                     | walk-in clinic
 wk                      | weeks
-yr                      | years
 ya                      | You are at home in
+yfut                    | Your main concern today is to follow-up on test results
 yh                      | You have had
 ym                      | Your main concern today is
+ymed                    | Your current medications include
+ymnd                    | You  were accompanied by your mom and dad
+ymhx                    | Your medical history significantly includes
 yn                      | You have had no
+ynhx                    | You have no previous significant medical history, no prescription medications and no relevant family history
+yr                      | years
+yrx                     | You are requesting a prescription for
+yw                      | You appear well, with no apparent distress
 xr                      | x-ray
 
 Components              | Description
@@ -135,9 +189,13 @@ Components              | Description
 :covidsig               | Covid Reminder To Social Distance
 :date                   | Current Date
 :FIFE                   | Feelings, Ideas, Function, Expectations
+:fufp                   | Follow-up with your regular Family Physician
+:getrx                  | Instructions for completing prescription
 :headachefu             | Headache Follow-up Precautions
 :headacheredflag        | Headache Red Flags
 :hitsh                  | Hypothyroid Symptoms
+:ironho                 | Handout on Iron in Foods
+:life                   | General lifestyle advice
 :lmom                   | Left message for patient
 :lotsh                  | Hyperthyroid Symptoms
 :lowtestinfo            | Low Testosterone Related Info
@@ -146,8 +204,12 @@ Components              | Description
 :neuroredflag           | Neurology Red Flags
 :OLDCARTS               | Pain History Acronym
 :pain                   | Pain History
+:psylink                | Useful psychiatry links
+:psylinkbc              | Useful psychiatry links specific to British Columbia
+:psymed                 | General advice about antidepressants
 :PQRST                  | Pain History Acronym
 :sleephy                | Sleep Hygiene
+:snet                   | General safety net advice
 :SOCRATES               | Pain History Acronym
 :time                   | Current Time
 :tremorinfo             | Tremor Related Info

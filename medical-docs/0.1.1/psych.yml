@@ -20,5 +20,43 @@ matches:
         {{op}} normal memory and attention
         {{op}} good insight and judgement
 
+  - trigger: ":psylink"
+    word: true
+    replace: |
+      {{pp}} refer to the following links:
+
+      https://psychhealthandsafety.org/asw
+      https://cmha.bc.ca/
+      https://moodgym.com.au/
+      https://www.anxietycanada.com/
+      https://bouncebackbc.ca/
+      https://www.keltyskey.com/
+
+  # some links specific to counselling resources in British Columbia
+  - trigger: ":psylinkbc"
+    word: true
+    replace: |
+      {{pp}} see the links below to arrange a counselling group or therapist.
+      Normally one-on-one therapy is private pay and a physician referral is not required.
+      Vancouver Coastal Health offers free group therapy and this requires a physician referral.
+
+      https://counsellingbc.com/
+      https://www.psychologists.bc.ca/find_psychologist
+      https://divisionsbc.ca/sites/default/files/inline-files/NEW_2019%20-%2003%20-%20CBT%20BROCHURE%20FOR%20PATIENTS%20%28HOME%20PRINTER%29.pdf
+
+  - trigger: ":psymed"
+    word: true
+    replace: |
+      Medications can sometimes be helpful for anxiety and depression.
+      To be effective, they must be taken once daily, every day.
+      They usually take several weeks to start having a significant effect.
+      They are usually continued for at least 9 to 12 months.
+      Some more common side effects include nausea, sweating and dry mouth.
+      When first starting, they may cause a temporary increase in anxiety,
+      and rarely an increase in suicidal thinking.
+      If suicidal thoughts are increasing, it is important to seek help immediately.
+
+
+
 
 
