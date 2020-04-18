@@ -59,6 +59,12 @@ global_vars:
     params:
       echo: "wressl@gmail.com"
 
+  # your phone number to be included as appropriate
+  - name: "myphone"
+    type: "dummy"
+    params:
+      echo: "1-800-123-4567"
+
   # Some prefixes to implement patient facing documentation
   # chief complaint prefix: headache -> Your main concern today is headache
   - name: "cc"
