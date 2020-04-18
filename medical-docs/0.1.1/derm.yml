@@ -81,3 +81,32 @@ matches:
                worsening despite 48h antibiotics, or new systemic symptoms (fever, nausea)
         {{pp}} go to ER if rapid progression of redness, severe nausea or high fever
 
+  - trigger: ":eczemamgt"
+    word: true
+    replace: |
+      Eczema Care Instructions:
+      1. Bathing
+        a. Not about frequency but duration. Must be between 5-15 minutes.
+        b. Warm – lukewarm/moderate warm
+        c. Do not wipe dry – Pat dry only. Leave some moisture on skin
+
+      2. Do not use soap – use hypoallergenic baby wash once a week only (e.g. Cetaphil, Cerave, Avene, Aveeno)
+
+      3. If needs medicated cream (Steroid (Betamethasone, Hydrocortisone, Mometasone etc.) or Tacrolimus base Cream(Protopic/Elidel) ) – apply as first layer.
+        a. Steroid must be used consecutively daily, then stop when controlled
+           (do not use intermittently).
+        b. Maximum daily use is 2 weeks
+        c. After 2 weeks use of steroids must have 1-2 weeks of break
+           then can resume using this again.
+        d. Tacrolimus based meds can be used indefinitely until complete control.
+        e. Minimize direct sun exposure when on medicated creams.
+
+      4. Apply moisturizing creams (Cerave Cream, Vaseline Creamy, Avene Cream) – avoid lotions (has alcohol usually which dries the skin more)
+
+      5. Add extra layer of Petroleum Jelly (Vaseline). Must be used at flare up and may be used in maintenance phase well.
+
+      6. Maintenance – once Eczema is controlled NEVER STOP using moisturizer (e.g. Cerave) that works best for you.
+
+      7. RELAPSE IS VERY HIGH IF YOU STOP MAINTENANCE!
+
+      8. Improve moisture with use of humidifier, increase fluids, healthy diet (more fruits and veggies).

@@ -199,6 +199,10 @@ matches:
     replace: "On examination of the photo provided, "
     word: true
 
+  - trigger: ":fuwr"
+    replace: "{{pp}} follow-up when results are available"
+    word: true
+
   - trigger: ":life"
     word: true
     replace: |

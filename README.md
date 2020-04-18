@@ -188,12 +188,16 @@ Components              | Description
 :covidredflags          | Covid Red Flags
 :covidsig               | Covid Reminder To Social Distance
 :date                   | Current Date
+:eczemamgt              | Eczema care instructions
 :FIFE                   | Feelings, Ideas, Function, Expectations
 :fufp                   | Follow-up with your regular Family Physician
+:fuwr                   | Follow-up when results are available
 :getrx                  | Instructions for completing prescription
+:giredflag              | Gastrointestinal Red Flags
 :headachefu             | Headache Follow-up Precautions
 :headacheredflag        | Headache Red Flags
 :hitsh                  | Hypothyroid Symptoms
+:ibsmgt                 | IBS management suggestions
 :ironho                 | Handout on Iron in Foods
 :life                   | General lifestyle advice
 :lmom                   | Left message for patient
@@ -226,6 +230,7 @@ Clinical Notes          | Description
 :delayedejac            | Delayed Ejaculation
 :hairloss               | Hair Loss
 :headache               | Headache
+:ibs                    | Irritable Bowel Syndrome
 :insomnia               | Insomnia
 :intro                  | Introductory Visit
 :lowtest                | Low Testosterone
