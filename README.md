@@ -129,8 +129,10 @@ cpl                     | Please copy the following link into your browser:
 cv                      | COVID-19
 cxr                     | chest X-ray
 ds                      | drug-store
+EOM                     | extraocular movements (EOM)
 fit test                | FIT test (colon cancer screen)
 fp                      | Family Physician
+f/u                     | follow-up
 hr                      | hours
 labreq                  | Laboratory Requisition
 Lt                      | Left
@@ -152,6 +154,7 @@ ocp                     | oral contraceptive pill
 oeph                    | On examination of the photo provided,
 otc                     | over-the-counter
 P:                      | Plan:
+PERRLA                  | pupils equal, round, reactive to light and accomodation (PERRLA)
 pf                      | puffs
 pn                      | BC PharmaNet
 prn                     | as needed
@@ -191,13 +194,18 @@ xr                      | x-ray
 
 Components              | Description
 --------------          | ------------------
+:arcause                | Causes of arrhythmia (6Hs,5Ts)
+:cage                   | CAGE screen for ETOH abuse
 :covidredflags          | Covid Red Flags
 :covidsig               | Covid Reminder To Social Distance
+:cthead                 | Canadian CT Head Rule
 :date                   | Current Date
 :eczemamgt              | Eczema care instructions
 :FIFE                   | Feelings, Ideas, Function, Expectations
 :fufp                   | Follow-up with your regular Family Physician
 :fuwr                   | Follow-up when results are available
+:gad7                   | GAD-7 questionnaire for anxiety
+:gcs                    | Glasgow Coma Scale
 :getrx                  | Instructions for completing prescription
 :giredflag              | Gastrointestinal Red Flags
 :headachefu             | Headache Follow-up Precautions
@@ -213,16 +221,29 @@ Components              | Description
 :neuroexam              | General Neurology Exam
 :neuroredflag           | Neurology Red Flags
 :OLDCARTS               | Pain History Acronym
+:opsredflag             | Subjective Ophtho Red Flags
+:oporedflag             | Objective Ophtho Red Flags
 :pain                   | Pain History
+:perc                   | PERC criteria to rule out PE
+:phq9                   | PHQ-9 questionnaire for depression
 :psylink                | Useful psychiatry links
 :psylinkbc              | Useful psychiatry links specific to British Columbia
 :psymed                 | General advice about antidepressants
 :PQRST                  | Pain History Acronym
+:risksuicide            | Risk factors for suicide
+:sessri                 | Side effects of SSRIs
 :sleephy                | Sleep Hygiene
 :snet                   | General safety net advice
 :SOCRATES               | Pain History Acronym
+:sxetohwd               | Symptoms of ETOH withdrawal
+:sxgad                  | Symptoms of Generalized Anxiety
+:sxmania                | Symptoms of Mania
+:sxmdd                  | Symptoms of Depression
+:sxpanic                | Symptoms of Panic Attack
 :time                   | Current Time
 :tremorinfo             | Tremor Related Info
+:wellsdvt               | Wells Score for DVT
+:wellspe                | Wells Score for PE
 
 
 Clinical Notes          | Description
@@ -241,6 +262,10 @@ Clinical Notes          | Description
 :intro                  | Introductory Visit
 :lowtest                | Low Testosterone
 :phone                  | Basic phone call
+:redeye                 | Red eye
+:refill                 | Refill medication
+:shingles               | Shingles rash
+:sicknote               | Sick Note
 :skininfection          | Skin infection
 :SOAP                   | Basic SOAP note
 :sti                    | STI concern

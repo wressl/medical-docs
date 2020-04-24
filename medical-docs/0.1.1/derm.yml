@@ -110,3 +110,32 @@ matches:
       7. RELAPSE IS VERY HIGH IF YOU STOP MAINTENANCE!
 
       8. Improve moisture with use of humidifier, increase fluids, healthy diet (more fruits and veggies).
+
+
+  - trigger: ":shingles"
+    word: true
+    replace: |
+      Subjective:
+        {{cc}} rash concerning for possible shingles for the past DURATION
+        The rash location is LOCATION
+        {{sp}} no pain
+        {{sp}} no blisters
+        {{sp}} no previous similar rash
+        {{sp}} no previous diagnosed shingles
+        {{sp}} no previous shingles vaccine (Shingrix or Zostavax)
+        {{sp}} no previous chicken pox
+
+      Objective:
+        {{op}} unilateral (on one side of body) multiple vesicles on erythematous base at LOCATION
+
+      Assessment:
+        {{ap}} Shingles (Herpes Zoster)
+
+      Plan:
+        {{pp}} take valacyclovir for 7 days (1g three times daily)
+        {{pp}} take acetaminophen (Tylenol) as needed for pain
+        {{pp}} follow-up if not responding to treatment or other concerns
+
+
+
+

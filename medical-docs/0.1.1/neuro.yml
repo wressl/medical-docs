@@ -2,7 +2,49 @@ name: neuro
 parent: default
 
 matches:
+  - trigger: ":cthead"
+    word: true
+    replace:  |
+      Canadian Head CT Rule
+        (not for age <16, anticoag or bleeding disorder, pregnancy)
+      CT if any present:
+        Basal Skull Fracture
+        Emesis twice or more
+        Age of 65 or over
+        GCS score <15 at 2 hours after injury
+        Suspected open or depressed skull fracture
+        Signs of basal skull fracture
+           (hemotympanum, 'racoon' eyes, CSR otorrhea/rhinorrhea, Battle's sign)
+        Amnesia before impact of 30 minutes or more
+        Dangerous mechanism (pedestrian, ejected from vehicle, fall from elevation >=3 feet or 5 stairs)
+
+  - trigger: ":gcs"
+    word: true
+    replace:  |
+      Glasgow Coma Scale
+      Eyes:
+        4: Open spontaneously
+        3: Open to speech
+        2: Open to pain
+        1: No response
+      Verbal:
+        5: Alert and oriented
+        4: Disoriented
+        3: Inappropriate words
+        2: Unintelligible (moans)
+        1: No response
+      Motor:
+        6: Follows commands
+        5: Localizes to pain
+        4: Withdraws from pain
+        3: Decorticate
+           (stiff with bent arms, clenched fists, and legs held out straight)
+        2: Decerebrate
+           (arms and legs held straight out, toes pointed downward, and the head and neck arched backward)
+        1: No response
+
   - trigger: ":neuroexam"
+    word: true
     replace:  |
       {{op}} normal level of conciousness
         {{op}} normal exam of head, eyes, ears, nose and throat
@@ -14,6 +56,7 @@ matches:
         {{op}} normal ability to retain balance with eyes closed (negative Rhomberg)
 
   - trigger: ":neuroredflag"
+    word: true
     replace:  |
       {{sp}} no difficulty speaking (dysarthria)
         {{sp}} no double vision (diplopia)

@@ -139,6 +139,11 @@ matches:
     replace: "appointment"
     word: true
 
+  - trigger: "f/u"
+    replace: "follow-up"
+    word: true
+    propagate_case: true
+
   - trigger: "wic"
     replace: "walk-in clinic"
     word: true
@@ -311,6 +316,40 @@ matches:
       Severity:
 
 
+  - trigger: ":refill"
+    word: true
+    replace: |
+      Subjective:
+        {{cc}} needing to refill previously prescribed medication: MEDNAME
+        which is being prescribed for INDICATION
+        for approximately the past DURATION
+
+        {{sp}} no concerns with how well it is working (efficacy)
+        {{sp}} no concerns with side-effects
+      Plan:
+        Prescription provided to extend use of MEDNAME
+        {{pp}} continue to use medication as prescribed
+        {{pp}} follow-up with regular Family Physician 
+
+  - trigger: ":sicknote"
+    word: true
+    replace: |
+      To whom this may concern,
+
+      The above patient was seen and was assessed in my clinic.
+      The patient is advised to be off  work  school on:
+
+      {{mydate}}
+
+      Should you have any clarifications please don't hesitate to contact me.
+
+      Thank you very much.
+
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%B %d, %Y"
 
 
 

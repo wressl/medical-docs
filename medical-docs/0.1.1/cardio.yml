@@ -52,3 +52,69 @@ matches:
         params:
           trigger: ":pain"
 
+  # Causes of tachy or brady arrythmias (6Hs and 5Ts)
+  - trigger: ":arcause"
+    word: true
+    replace: |
+      Hypoxia
+      Hypothermia
+      Hypovolemia
+      Hypoglycemia
+      Hydrogen ion (acidosis)
+      Hypo/Hyperkalemia
+
+      Trauma (increase intracranial pressure, hypovolemia)
+      Thrombosis (pulmonary or coronary)
+      Tamponade (cardiac)
+      Tension pneumothorax
+      Toxins
+
+  - trigger: ":wellsdvt"
+    word: true
+    replace: |
+      Wells Score for Deep Vein Thrombosis (DVT):
+        Active malignancy (past 6 months)            1
+        Immobilization at least 3 days OR
+        surgery in past 12 weeks                     1
+        Immobilization of lower extremity            1
+        Localized tenderness of deep venous system   1
+        Entire leg swollen                           1
+        Calf swelling >=3 cm larger than other side  1
+        Pitting edema confined to symptomatic side   1
+        Collateral superficial veins                 1
+        Previously documented DVT                    1
+        Alternatives diagnosis at least as likely   -2
+
+      Score >=3 indicates high probability of DVT
+
+  - trigger: ":wellspe"
+    word: true
+    replace: |
+      Wells Score for Pulmonary Embolism (PE):
+        Clinical signs and symptoms of DVT      3
+        Alternatives less likely than PE        3
+        Heart rate >100                         1.5
+        Previous PE or DVT (confirmed)          1.5
+        Immobilization at least 3 days OR
+        surgery in past 4 weeks                 1.5
+        Hemoptysis (coughing blood)             1
+        Active malignancy (past 6 months)       1
+
+      Score <=4 do d-dimer and if negative stop
+      Score >=5 do CTPA or V/Q scan
+
+  - trigger: ":perc"
+    word: true
+    replace: |
+      PERC Criteria to Rule Out Pulmonary Embolism (PE):
+        If the probability of PE is less than 15% and
+        all the following are true, no further tests required
+
+        {{sp}} age <50
+        {{sp}} pulse <100 bpm
+        {{sp}} oxygen saturation >=95%
+        {{sp}} no coughing up blood (hemoptysis)
+        {{sp}} no estrogen use (oral contraceptive or hormone replacement)
+        {{sp}} no surgery or trauma needing general anesthesia in past 4 weeks
+        {{sp}} no previous blood clots (venous thromboembolism)
+        {{sp}} no leg swelling on only one side
