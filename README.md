@@ -231,6 +231,11 @@ Components              | Description
 :psymed                 | General advice about antidepressants
 :PQRST                  | Pain History Acronym
 :risksuicide            | Risk factors for suicide
+:rxchiro                | Prescription for Chiropractor Treatment
+:rxcompression          | Prescription for Compression Stockings
+:rxmassage              | Prescription for Massage Therapy
+:rxorthotics            | Prescription for Custom Orthotics
+:rxphysio               | Prescription for Physiotherapy
 :sessri                 | Side effects of SSRIs
 :sleephy                | Sleep Hygiene
 :snet                   | General safety net advice
@@ -255,12 +260,14 @@ Clinical Notes          | Description
 :covidphone             | Covid Related Phone Call
 :covidrisk              | Covid Risk Assessment
 :delayedejac            | Delayed Ejaculation
+:driver                 | Driver's Medical
 :hairloss               | Hair Loss
 :headache               | Headache
 :ibs                    | Irritable Bowel Syndrome
 :insomnia               | Insomnia
 :intro                  | Introductory Visit
 :lowtest                | Low Testosterone
+:ocp                    | Oral Contraceptive Refill
 :phone                  | Basic phone call
 :redeye                 | Red eye
 :refill                 | Refill medication
