@@ -213,6 +213,7 @@ Components              | Description
 :hitsh                  | Hypothyroid Symptoms
 :ibsmgt                 | IBS management suggestions
 :ironho                 | Handout on Iron in Foods
+:ksprevent              | Strategies to Prevent Kidney Stones
 :life                   | General lifestyle advice
 :lmom                   | Left message for patient
 :lotsh                  | Hyperthyroid Symptoms
@@ -261,12 +262,17 @@ Clinical Notes          | Description
 :covidrisk              | Covid Risk Assessment
 :delayedejac            | Delayed Ejaculation
 :driver                 | Driver's Medical
+:excision               | Skin excision
+:ffertility             | Female infertility
+:fluvac                 | Influenza vaccine visit
 :hairloss               | Hair Loss
 :headache               | Headache
 :ibs                    | Irritable Bowel Syndrome
+:injcort                | Injection of Corticosteroid
 :insomnia               | Insomnia
 :intro                  | Introductory Visit
 :lowtest                | Low Testosterone
+:nosebleed              | Epistaxis
 :ocp                    | Oral Contraceptive Refill
 :phone                  | Basic phone call
 :redeye                 | Red eye
