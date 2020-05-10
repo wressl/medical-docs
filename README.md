@@ -200,6 +200,11 @@ Components              | Description
 :covidsig               | Covid Reminder To Social Distance
 :cthead                 | Canadian CT Head Rule
 :date                   | Current Date
+:depain                 | Digital (Video) Exam for Pain
+:demental               | Digital (Video) Exam for Mental Status
+:depeds                 | Digital (Video) Exam for Pediatrics
+:deresp                 | Digital (Video) Exam for Respiratory
+:deabdo                 | Digital (Video) Exam for Abdomen
 :eczemamgt              | Eczema care instructions
 :FIFE                   | Feelings, Ideas, Function, Expectations
 :fufp                   | Follow-up with your regular Family Physician
@@ -227,6 +232,7 @@ Components              | Description
 :pain                   | Pain History
 :perc                   | PERC criteria to rule out PE
 :phq9                   | PHQ-9 questionnaire for depression
+:preprisk               | Pre-Exposure Prophylaxis (PrEP) for HIV Risk Score
 :psylink                | Useful psychiatry links
 :psylinkbc              | Useful psychiatry links specific to British Columbia
 :psymed                 | General advice about antidepressants
@@ -235,12 +241,14 @@ Components              | Description
 :rxchiro                | Prescription for Chiropractor Treatment
 :rxcompression          | Prescription for Compression Stockings
 :rxmassage              | Prescription for Massage Therapy
+:rxmastitis             | Prescription for Topical Treatment for Mastitis
 :rxorthotics            | Prescription for Custom Orthotics
 :rxphysio               | Prescription for Physiotherapy
 :sessri                 | Side effects of SSRIs
 :sleephy                | Sleep Hygiene
 :snet                   | General safety net advice
 :SOCRATES               | Pain History Acronym
+:strepscore             | Strep Throat Score (McIsaac)
 :sxetohwd               | Symptoms of ETOH withdrawal
 :sxgad                  | Symptoms of Generalized Anxiety
 :sxmania                | Symptoms of Mania

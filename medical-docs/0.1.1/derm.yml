@@ -136,6 +136,15 @@ matches:
         {{pp}} take acetaminophen (Tylenol) as needed for pain
         {{pp}} follow-up if not responding to treatment or other concerns
 
+  - trigger: ":rxmastitis"
+    word: true
+    replace: |
+      Compound prescription: Mupirocin ointment 2% (15g)
+                             + Betamethasone ointment 0.1% (15g)
+                             + Miconazole powder to 2%
+      Apply to to affected areas twice daily
+      Wrap with saran wrap for maximum absorption if possible
+
 
 
 

@@ -40,15 +40,4 @@ matches:
          {{pp}} seek reassessment if increasing symptoms after 7 days
          {{pp}} call 911 or go to ED if difficulty breathing develops
 
-  - trigger: ":strepphone"
-    word: true
-    replace: |
-      PHONE COMMUNICATION
-
-      Reason for call: Strep swab positive
-
-      Notes:
-        Informed strep swab positive and should start prescription given last visit.
-        Patient understands and agreeable.  Grateful for call.
-        Will contact clinic if further concerns, not improving despite treatment.
 
