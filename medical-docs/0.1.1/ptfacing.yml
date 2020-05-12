@@ -66,9 +66,34 @@ matches:
   - trigger: ":getrx"
     word: true
     replace: |
-      Once your prescription has been written, you will receive a notification on your app.
-      You then need to acknowledge the notification and select a pharmacy where the prescription will be sent.
+      Once your prescription has been written, you will receive a
+      notification on your app.
+      You then need to acknowledge the notification and select a pharmacy
+      where the prescription will be sent.
       You need to select the pharmacy EVERY TIME you receive a prescription.
+
+  - trigger: ":results"
+    word: true
+    replace: |
+      Once your tests are completed and results are available,
+      you will hear from us.
+      For some tests, this will be within 2-3 DAYS of completing the tests,
+      but for other tests it will be longer.  Some blood tests take up to
+      7 WORKING DAYS and MRIs can take up to 10 WORKING DAYS.
+
+      You will be contacted regardless of whether or not the results
+      require follow up. Please wait to be contacted about the results
+      before booking a follow up appointment.
+
+      If you have not received notification of your results from us
+      WITHIN 5 DAYS of completing your tests, please contact us:
+        Email: {{myemail}}
+        Phone: {{myphone}}
+
+      If there is a significant change in your symptoms, or decline
+      in your health while waiting for the results, please do not wait
+      for the results before being reassessed. Please seek out medical care
+      as soon as possible if there is a significant worsening of your condition.
 
 
 

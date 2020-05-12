@@ -237,6 +237,7 @@ Components              | Description
 :psylinkbc              | Useful psychiatry links specific to British Columbia
 :psymed                 | General advice about antidepressants
 :PQRST                  | Pain History Acronym
+:results                | Explanation of results follow-up
 :risksuicide            | Risk factors for suicide
 :rxchiro                | Prescription for Chiropractor Treatment
 :rxcompression          | Prescription for Compression Stockings
