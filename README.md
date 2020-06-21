@@ -91,6 +91,26 @@ global_vars:
     type: "dummy"
     params:
       echo: "You are recommended to"
+  # covid website: local self-assessment site to request testing
+  - name: "covidwebsite"
+    type: "dummy"
+    params:
+      echo: "https://myhealth.alberta.ca/Journey/COVID-19"
+  # find a family physician website: local
+  - name: "findfpwebsite"
+    type: "dummy"
+    params:
+      echo: "https://albertafindadoctor.ca/"
+matches:
+  # instructions on how to get your prescription
+  - trigger: ":rxget"
+    word: true
+    replace: |
+      Once your prescription has been written, you will receive a
+      notification on your app.
+      You then need to acknowledge the notification and select a pharmacy
+      where the prescription will be sent.
+      You need to select the pharmacy EVERY TIME you receive a prescription.
 ```
 
 4. restart espanso
@@ -179,6 +199,8 @@ vutd                    | vaccinations are up to date
 wic                     | walk-in clinic
 wk                      | weeks
 ya                      | You are at home in
+yaa                     | You are at home in XXXX accompanied by your mother XXXX
+yar                     | You are advised to
 yfut                    | Your main concern today is to follow-up on test results
 yh                      | You have had
 ym                      | Your main concern today is
@@ -195,9 +217,12 @@ xr                      | x-ray
 Components              | Description
 --------------          | ------------------
 :arcause                | Causes of arrhythmia (6Hs,5Ts)
+:asthma                 | Asthma ICS start
 :cage                   | CAGE screen for ETOH abuse
+:cialis                 | Cialis (tadalafil) start
 :covidredflags          | Covid Red Flags
-:covidsig               | Covid Reminder To Social Distance
+:covidremind            | Covid Reminder To Social Distance, Wash Hands, etc
+:covidtest              | Recommend Covid Test
 :cthead                 | Canadian CT Head Rule
 :date                   | Current Date
 :depain                 | Digital (Video) Exam for Pain
@@ -206,12 +231,13 @@ Components              | Description
 :deresp                 | Digital (Video) Exam for Respiratory
 :deabdo                 | Digital (Video) Exam for Abdomen
 :eczemamgt              | Eczema care instructions
+:finish                 | Finish to visit note (results, prescription, etc)
+:findfp                 | Recommendation to find family physician
 :FIFE                   | Feelings, Ideas, Function, Expectations
 :fufp                   | Follow-up with your regular Family Physician
 :fuwr                   | Follow-up when results are available
 :gad7                   | GAD-7 questionnaire for anxiety
 :gcs                    | Glasgow Coma Scale
-:getrx                  | Instructions for completing prescription
 :giredflag              | Gastrointestinal Red Flags
 :headachefu             | Headache Follow-up Precautions
 :headacheredflag        | Headache Red Flags
@@ -223,24 +249,31 @@ Components              | Description
 :lmom                   | Left message for patient
 :lotsh                  | Hyperthyroid Symptoms
 :lowtestinfo            | Low Testosterone Related Info
+:menses                 | Menstrual History
 :mse                    | Mental Status Exam
 :neuroexam              | General Neurology Exam
 :neuroredflag           | Neurology Red Flags
+:noother                | No allergies, meds, med issues, etc
 :OLDCARTS               | Pain History Acronym
 :opsredflag             | Subjective Ophtho Red Flags
 :oporedflag             | Objective Ophtho Red Flags
 :pain                   | Pain History
 :perc                   | PERC criteria to rule out PE
 :phq9                   | PHQ-9 questionnaire for depression
+:physio                 | recommendation for physiotherapy
 :preprisk               | Pre-Exposure Prophylaxis (PrEP) for HIV Risk Score
 :psylink                | Useful psychiatry links
 :psylinkbc              | Useful psychiatry links specific to British Columbia
 :psymed                 | General advice about antidepressants
 :PQRST                  | Pain History Acronym
+:refer                  | Referral sent
 :results                | Explanation of results follow-up
+:rice                   | Rest Ice Compression Elevation advice
 :risksuicide            | Risk factors for suicide
 :rxchiro                | Prescription for Chiropractor Treatment
 :rxcompression          | Prescription for Compression Stockings
+:rxget                  | Instructions for completing prescription
+:rxkeflex               | Prescription for Cephalexin (Keflex)
 :rxmassage              | Prescription for Massage Therapy
 :rxmastitis             | Prescription for Topical Treatment for Mastitis
 :rxorthotics            | Prescription for Custom Orthotics
@@ -248,7 +281,9 @@ Components              | Description
 :sessri                 | Side effects of SSRIs
 :sleephy                | Sleep Hygiene
 :snet                   | General safety net advice
+:snet2                  | Safety net advice while waiting for results
 :SOCRATES               | Pain History Acronym
+:stitest                | Recommendation for STI testing
 :strepscore             | Strep Throat Score (McIsaac)
 :sxetohwd               | Symptoms of ETOH withdrawal
 :sxgad                  | Symptoms of Generalized Anxiety
@@ -259,44 +294,59 @@ Components              | Description
 :tremorinfo             | Tremor Related Info
 :wellsdvt               | Wells Score for DVT
 :wellspe                | Wells Score for PE
-
+:xray                   | X-ray being ordered
 
 Clinical Notes          | Description
 --------------          | ------------------
+:abdopain               | Abdominal Pain
 :ankle                  | Ankle Pain
+:aub                    | Abnormal Uterine Bleeding
 :back                   | Back Pain
+:bellsp                 | Bell's Palsy
+:canker                 | Canker (Aphthous Ulcer)
 :chestpain              | Chest pain
 :covidmonitor           | Covid Monitoring
 :covidphone             | Covid Related Phone Call
 :covidrisk              | Covid Risk Assessment
 :delayedejac            | Delayed Ejaculation
+:depression             | Depression
 :driver                 | Driver's Medical
 :excision               | Skin excision
+:fatigue                | Fatigue
 :ffertility             | Female infertility
 :fluvac                 | Influenza vaccine visit
+:gout                   | Gout
 :hairloss               | Hair Loss
 :headache               | Headache
+:hernia                 | Hernia
+:hsv                    | Herpes Simplex Virus
 :ibs                    | Irritable Bowel Syndrome
 :injcort                | Injection of Corticosteroid
 :insomnia               | Insomnia
 :intro                  | Introductory Visit
 :lowtest                | Low Testosterone
+:nailfungus             | Nail Fungus
+:noshow                 | No show note
 :nosebleed              | Epistaxis
 :ocp                    | Oral Contraceptive Refill
 :phone                  | Basic phone call
 :redeye                 | Red eye
 :refill                 | Refill medication
+:refills                | Multiple refills for medication
 :shingles               | Shingles rash
 :sicknote               | Sick Note
 :skininfection          | Skin infection
 :SOAP                   | Basic SOAP note
 :sti                    | STI concern
+:stye                   | Hordeolum (Stye)
 :strep                  | Strep Throat
 :strepphone             | Strep Throat Positive Phonecall
 :tremor                 | Tremor
 :urti                   | Upper Respiratory Tract Infection
 :uti                    | Urine Tract Infection
+:uti2                   | Urine Tract Infection (alternate)
 :vertigo                | Vertigo
+:wrist                  | Wrist Pain
 
 ## Contributors
 If you are interested in becoming a contributor
