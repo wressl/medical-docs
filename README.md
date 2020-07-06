@@ -37,7 +37,7 @@ can maintain on their own.
 # use clipboard to insert text
 # should be smoother operation unless your application can't accept
 # input from clipboard
-backend: "Clipboard"
+# backend: "Clipboard"
 
 # global variables
 global_vars:
