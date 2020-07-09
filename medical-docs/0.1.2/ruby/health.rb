@@ -325,6 +325,7 @@ class HealthStatus
     end
     return retval
   end
+
   def lab_date_get(name, index)
     retval = ""
     if @LabValues.key?(name)
@@ -333,6 +334,81 @@ class HealthStatus
       end
     end
     return retval
+  end
+
+  # generate a table of most recent lab values
+  # with a maximum number of columns specified
+  def lab_table(names, columns)
+    cur_index = Array.new
+    dates = Array.new
+    table = Hash.new
+    cur_col = 0
+    empty = 0
+
+    # start at the most recent entry for all
+    names.each_with_index { |val, index| cur_index[index] = 0 }
+
+    # keep collecting values until the columns
+    # filled or no more data
+    while ((cur_col < columns) && (empty == 0))
+
+      # find the next most recent date out of all
+      # note that if an entry doesn't exist it
+      # will return ""
+      cur_index.each_with_index {|val, index|
+        dates[index] = lab_date_get(names[index], val)}
+
+      latest = ""
+      dates.each_with_index {|val, index|
+        if latest == ""
+          latest = val
+          latest_index = index
+        elsif val != ""
+          if val > latest
+            latest = val
+            latest_index = index
+          end
+        end
+      }
+      # if latest date is still empty, must mean
+      # no data left.
+      if latest == ""
+        empty = 1
+      else
+        # otherwise add a column for the next date
+        table[latest] = Array.new
+        # find all the values available for this date
+        # for the next column in the table
+        dates.each_with_index {|val, index|
+          labval = ""
+          if (val == latest)
+            labval = lab_get(names[index],cur_index[index])
+            cur_index[index] += 1
+          end
+          table[latest][index] = labval
+        }
+        cur_col += 1
+      end
+    end
+
+    # print out the table
+    # print out the dates
+    row = ""
+    table.keys.sort.each do |key|
+      date = key.strftime('%b %Y')
+      row = sprintf("%-20s%-10s",row,date)
+    end
+    out_add(row)
+
+    # then print the values for each lab
+    names.each_with_index { |val, index|
+      row = val
+      table.keys.sort.each do |key|
+        value = table[key]
+        row = sprintf("%-20s%-10s",row,value[index])
+      end
+      out_add(row)
+    }
   end
 
   def lab_dump
@@ -348,7 +424,7 @@ class HealthStatus
     if line =~ /^([-\w\s]+):/
       @labname = $1
     end
-    if line =~ /^([\.\d]+)\s.+\s(\w\w\w \d\d, \d\d\d\d)\z/
+    if line =~ /^([\.\d]+).*\s(\w\w\w \d\d, \d\d\d\d)\z/
       value = $1
       date = Date.parse $2
       if @labname == ""
@@ -393,9 +469,6 @@ class HealthStatus
         next
       when /^Laboratory Values:/
         section = "Labs"
-        next
-      when /^Screening/
-        section = "Screening"
         next
       end
 
@@ -563,6 +636,50 @@ class HealthStatus
     out_add("Your normal BMI weight range is #{wt_range}")
     out_add("Your obese BMI weight range is over #{wt_obese}")
     out_add("")
+
+    lab_table(["Height", "Weight"],5)
+  end
+
+  def diabetes_dump()
+    out_add("")
+    out_add("Diabetes Analysis")
+    out_add_line()
+    lab_table(["Hemoglobin A1C", "Fasting Glucose"],5)
+  end
+
+  def cholesterol_dump()
+    out_add("")
+    out_add("Cholesterol Analysis")
+    out_add_line()
+    lab_table(["HDL", "LDL", "Total Cholesterol", "Non-HDL Cholesterol"],5)
+  end
+
+  def bloodpressure_dump()
+    out_add("")
+    out_add("Blood Pressure Analysis")
+    out_add_line()
+    lab_table(["SBP", "DBP"],5)
+  end
+
+  def kidney_dump()
+    out_add("")
+    out_add("Kidney Function Analysis")
+    out_add_line()
+    lab_table(["eGFR", "ACR", "Urine RBC"],5)
+  end
+
+  def liver_dump()
+    out_add("")
+    out_add("Liver Function Analysis")
+    out_add_line()
+    lab_table(["ALT", "AST", "ALP", "GGT"],5)
+  end
+
+  def prostate_dump()
+    out_add("")
+    out_add("Prostate Analysis")
+    out_add_line()
+    lab_table(["PSA"],5)
   end
 
   # generate the output report
@@ -580,6 +697,14 @@ class HealthStatus
     lifestyle_dump
     famhx_dump
     bmi_dump
+
+    diabetes_dump
+    cholesterol_dump
+    bloodpressure_dump
+    kidney_dump
+    liver_dump
+    prostate_dump
+
     # lab_dump
     action_dump
     return @outtext
