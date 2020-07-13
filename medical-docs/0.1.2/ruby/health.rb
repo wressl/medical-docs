@@ -17,13 +17,16 @@ class HealthStatus
   @@CondMeds = {
     "acid reflux" => ["omeprazole", "pantoprazole"],
     "afib" => ["apixaban", "carvedilol", "coumadin",
-                              "metoprolol", "propafenone"],
-    "diabetes" => ["empagliflozin", "metformin"],
-    "enlarged prostate" => ["finasteride", "tamsulosin"],
+               "metoprolol", "propafenone"],
     "blood pressure" => ["amlodipine", "bisoprolol",
                               "carvedilol", "hydrochlorothiazide",
                               "irbesartan", "metoprolol", "olmesartan",
                               "telmisartan","valsartan", "verapamil"],
+    "diabetes" => ["empagliflozin", "metformin"],
+    "enlarged prostate" => ["finasteride", "tamsulosin"],
+    "high cholesterol" => ["atorvastatin", "evolocumab", "fluvastatin",
+                           "icosapent ethyl", "lovastatin", "pravastatin",
+                           "rosuvastatin", "simvastatin"],
   }
 
   # make a look-up from generic to brand drug names
@@ -33,9 +36,15 @@ class HealthStatus
     "atorvastatin"  => "lipitor",
     "coumadin"      => "warfarin",
     "empagliflozin" => "jardiance",
+    "evolocumab"    => "repatha",
+    "fluvastatin"   => "lescol",
+    "icosapent ethyl" => "vascepa",
+    "lovastatin"    => "mevacor",
     "pantoprazole"  => "pantoloc",
+    "pravastatin"   => "pravachol",
     "rosuvastatin"  => "crestor",
     "salbutamol"    => "ventolin",
+    "simvastatin"   => "zocor",
     "tamsulosin"    => "flomax"
   }
   # make a reverse look-up from brand to generic drug names
@@ -55,7 +64,11 @@ class HealthStatus
     @Prevent = Hash.new
     @actionplan = Array.new
     @outtext = ""
+    @outbuffer = 0
+    @outbuffer_text = ""
     @labname = ""
+    @hmn_topics = ""
+    @hmn_recommended = 0
     parse_status(my_input);
   end
 
@@ -123,6 +136,24 @@ class HealthStatus
         @@CondMeds[key].each { |med| med_indication_attach(med,key) }
       end
     end
+
+    # look for any medications without an indication
+    # and attach our best guess
+    @Meds.each do |key, value|
+      indication = value[1]
+      if indication == ""
+        # go through all known conditions and attach
+        # any matching indication with a question mark
+        @@CondMeds.each do |ckey, cvalue|
+          cvalue.each { |med|
+            if med == key
+              med_indication_attach(key,"?#{ckey}")
+              @Conditions[ckey] = "Presumed from medication list"
+            end
+          }
+        end
+      end
+    end
   end
 
   # Add single med to output stream  
@@ -179,9 +210,7 @@ class HealthStatus
       action_add("Consider reducing number of medications. Currently #{num} oral medications")
     end
 
-    out_add("")
-    out_add("Medications")
-    out_add_line()
+    out_add_section("Medications")
 
     # now add a line for every med
     oralmeds.each { |name| med_single_dump name }
@@ -191,9 +220,8 @@ class HealthStatus
   end
 
   def mhx_dump()
-    out_add("")
-    out_add("Medical History")
-    out_add_line()
+    out_add_section("Medical History")
+
     @Conditions.keys.sort.each do |key|
       fout = sprintf("%s %s", key.ljust(20), @Conditions[key])
       out_add(fout)
@@ -209,14 +237,16 @@ class HealthStatus
       puts "Mapped #{name} to #{nname}"
       name = nname
     end
-    @Conditions[name] = $2
+    # @Conditions[name] = $2.strip
+    # most details seem to be irrelevant here
+    # for a patient facing report
+    # will just remove for now
+    @Conditions[name] = " "
     puts "Found history: #{name}  (#{$2})"
   end
 
   def allergy_dump()
-    out_add("")
-    out_add("Allergies")
-    out_add_line()
+    out_add_section("Allergies")
     @Allergies.each { |x| out_add(x) }
   end
 
@@ -226,9 +256,8 @@ class HealthStatus
   end
 
   def lifestyle_dump()
-    out_add("")
-    out_add("Lifestyle")
-    out_add_line()
+    out_add_section("Lifestyle")
+
     @Lifestyle.each do |key, value|
       fout = sprintf("%s %s", key.ljust(20), value[1])
       out_add(fout)
@@ -247,9 +276,8 @@ class HealthStatus
   end
 
   def famhx_dump()
-    out_add("")
-    out_add("Family History")
-    out_add_line()
+    out_add_section("Family History")
+
     @FamilyHx.each { |x| out_add(x) }
   end
 
@@ -392,6 +420,9 @@ class HealthStatus
     end
 
     # print out the table
+    # blank line before the table
+    out_add("")
+    
     # print out the dates
     row = ""
     table.keys.sort.each do |key|
@@ -517,15 +548,35 @@ class HealthStatus
     med_indication_find
   end
 
+  def out_buffer(buffer)
+    @outbuffer = buffer
+  end
+  
+  def out_buffer_flush()
+    @outtext << "#{@outbuffer_text}\n"
+  end
+
   def out_add(line)
     if line.length > 75
       line = "#{line[0...71]}..."
     end
-    @outtext << "#{line}\n"
+
+    # save output to a side buffer to add later
+    if (@outbuffer == 1)
+      @outbuffer_text << "#{line}\n"
+    else
+      @outtext << "#{line}\n"
+    end
   end
-  
+
   def out_add_line()
     out_add("----------------------------------------------------------------------")
+  end
+
+  def out_add_section(title)
+    out_add("")
+    out_add(title)
+    out_add_line()
   end
 
   # add to the action plan
@@ -533,12 +584,95 @@ class HealthStatus
     @actionplan << "#{line}"
   end
 
+  # keep track of recommendations to consult
+  # health management nurse
+  # which is an allied health professional who can help
+  # with lifestyle, weight loss, and diabetes management including foot exams
+  def hmn_book(topic)
+    puts "booking hmn for #{topic}"
+    if @hmn_topics == ""
+      @hmn_topics = topic
+    else
+      @hmn_topics = "#{@hmn_topics}, #{topic}"
+    end
+    @hmn_recommended = 1
+  end
+
+  # add hmn recommendations to actions
+  def hmn_dump
+    if (@hmn_recommended == 1)
+      action_add("Book with Health Management Nurse to discuss #{@hmn_topics}")
+      action_add("call 1-855-79-CFPCN (23726) or 587-774-9736 or online at cfpcn.ca")
+    end
+  end
+
   # dump the action plan
   def action_dump()
-    out_add("")
-    out_add("Action Plan")
-    out_add_line()
+    out_add_section("Action Plan")
+    hmn_dump
+
     @actionplan.each { |line| out_add(line) }
+  end
+
+
+  def lab_compare_prev(name, desc, targ_above, targ_below)
+    too_high = 0
+    too_low = 0
+
+    # check for current value
+    cur_val  = lab_get(name,0)
+    if cur_val != ""
+        prev_val = lab_get(name,1)
+        if prev_val != ""
+          cur_val = cur_val.to_f
+          prev_val = prev_val.to_f
+          if cur_val > prev_val
+            diff = (cur_val - prev_val).round(1)
+            out_add("Current #{desc} has increased by #{diff} from previous.")
+          elsif cur_val < prev_val
+            diff = (prev_val - cur_val).round(1)
+            out_add("Current #{desc} has decreased by #{diff} from previous.")
+          else
+            out_add("Current #{desc} is the same as previous.")
+          end
+        end
+
+        # if target range
+        if (targ_above != "") && (targ_below != "")
+          targ_above = targ_above.to_f
+          targ_below = targ_below.to_f
+
+          # check if too high
+          if cur_val > targ_below
+            out_add("**Current #{desc} (#{cur_val}) is TOO HIGH (target is #{targ_above} - #{targ_below})")
+            too_high = 1
+          elsif cur_val < targ_above
+            out_add("**Current #{desc} (#{cur_val}) is TOO LOW (target is #{targ_above} - #{targ_below})")
+            too_low = 1
+          else
+            out_add("Current #{desc} (#{cur_val}) is in range (target is #{targ_above} - #{targ_below})")
+          end
+        # if target of equal or above a certain number
+        elsif (targ_above != "")
+          targ_above = targ_above.to_f
+          if cur_val >= targ_above
+            out_add("Current #{desc} (#{cur_val}) is within target (#{targ_above} or above)")
+          else
+            out_add("**Current #{desc} (#{cur_val}) is BELOW target (#{targ_above} or above)")
+            too_low = 1
+          end
+        # if target of below or equal a certain number
+        elsif (targ_below != "")
+          targ_below = targ_below.to_f
+          if cur_val <= targ_below
+            out_add("Current #{desc} (#{cur_val}) is within target (#{targ_below} or below)")
+            too_low = 1
+          else
+            out_add("**Current #{desc} (#{cur_val}) is ABOVE target (#{targ_below} or below)")
+            too_high = 1
+          end
+        end
+    end
   end
 
   # return formatted conversion of kg to lb
@@ -614,6 +748,7 @@ class HealthStatus
       bmi_class = "Obese (30 or above)"
     end
     if cur_bmi > 25
+      hmn_book("weight loss")
       action_add("Consider weight management (current BMI #{cur_bmi})")
     end
 
@@ -627,59 +762,163 @@ class HealthStatus
     wt_range = "#{wt_min_kg} kg - #{wt_max_kg} kg (#{wt_min_lbs} - #{wt_max_lbs})"
     wt_obese = "#{wt_obese_kg} kg (#{wt_obese_lbs})"
 
-    out_add("")
-    out_add("Body Mass Index (BMI) Analysis")
-    out_add_line()
+    out_add_section("Body Mass Index (BMI) Analysis")
+
     out_add("Latest #{cur_date} Height: #{cur_ht}  Weight: #{cur_wt}")
     out_add("Compared to #{prev_date} #{diff_ht} and #{diff_wt}")
     out_add("Current BMI at #{cur_bmi} is classified as #{bmi_class}")
+    out_add("")
     out_add("Your normal BMI weight range is #{wt_range}")
     out_add("Your obese BMI weight range is over #{wt_obese}")
-    out_add("")
 
     lab_table(["Height", "Weight"],5)
   end
 
-  def diabetes_dump()
-    out_add("")
-    out_add("Diabetes Analysis")
-    out_add_line()
-    lab_table(["Hemoglobin A1C", "Fasting Glucose"],5)
+  # diabetes dump
+  def diabetes_dump
+    a1c = "Hemoglobin A1C"
+    fbg = "Fasting Glucose"
+
+    if @Conditions.key?("diabetes")
+      out_add_section("Diabetes Analysis")
+      # known diabetes
+      # analyze results considering current A1C target
+      # default to 7.0
+      targetA1C = 7.0
+      desc = @Conditions["diabetes"]
+      if  desc =~ /[T|t]arget\s+([\d.]+)/
+        targetA1C = $1
+      end
+
+      # check for current A1C date
+      currentDate = lab_date_get(a1c,0)
+      if (currentDate != "")
+        # check if current A1C is more than 3 months in the past
+        if ((currentDate >> 3) < @date)
+          out_add("Average Sugar (A1C) is more than 3 months old and should be retested")
+          action_add("Retest A1C (last more than 3 months ago)")
+        end
+      end
+      lab_compare_prev(a1c, "Average Sugar", "", targetA1C)
+
+      currentA1C = lab_get(a1c,0)
+      if (currentA1C != "")
+        currentA1C = currentA1C.to_f
+        if currentA1C > targetA1C
+          hmn_book("diabetic control")
+          action_add("Discuss improving diabetic control (A1C is #{currentA1C}) vs modifying target (#{targetA1C})")
+        end
+      end
+    else
+      # if diabetes is not noted as a current health issue
+      # analyze the data for risk of diabetes
+      out_add_section("Diabetes Risk Analysis")
+
+      prediabetes = 0
+      diabetes = 0
+      a1c_msg = "Average sugar is unavailable"
+      fbg_msg = "Fasting sugar is unavailable"
+      currentA1C  = lab_get(a1c,0)
+      if (currentA1C != "")
+        if (currentA1C < 6.0)
+          a1c_msg = "Average sugar is normal (under 6.0)"
+        elsif (currentA1C < 6.4)
+          a1c_msg = "Average sugar is prediabetic (6.0 - 6.4)"
+          prediabetic = 1;
+        else
+          a1c_msg = "Average sugar is diabetic (6.5 and above)"
+          diabetic = 1;
+        end
+      end
+      currentFBG  = lab_get(fpg,0)
+      if (currentFBG != "")
+        if (currentFGB < 6.0)
+          fbg_msg = "Fasting sugar is normal (under 6.0)"
+        elsif (currentA1C < 6.4)
+          fbg_msg = "Fasting sugar is prediabetic (6.0 - 6.9)"
+          prediabetic = 1;
+        else
+          fbg_msg = "Fasting sugar is diabetic (7.0 and above)"
+          diabetic = 1;
+        end
+      end
+      out_add("#{a1c_msg}  #{fbg_msg}")
+      if (diabetic == 1)
+        action_add("Discuss diagnosis of diabetes")
+        hmn_book("new diabetes")
+      elsif (prediabetic == 1)
+        action_add("Discuss lifestyle improvements to avoid progression to diabetes")
+        hmn_book("pre-diabetes")
+      end
+    end
+    #construct a table of relevant diabetes values
+    lab_table([a1c, fbg], 5);
+
   end
 
-  def cholesterol_dump()
-    out_add("")
-    out_add("Cholesterol Analysis")
-    out_add_line()
-    lab_table(["HDL", "LDL", "Total Cholesterol", "Non-HDL Cholesterol"],5)
+
+
+  # cholesterol dump
+  def cholesterol_dump
+    ldl = "LDL"
+    hdl = "HDL"
+    total = "Total Cholesterol"
+    nonhdl = "Non-HDL Cholesterol"
+
+    out_add_section("Cholesterol Analysis")
+
+
+    ldl_targ = 3.4
+    hdl_targ = 1.4
+
+    if @Conditions.key?("high cholesterol")
+      ldl_targ = 2.0
+    end
+
+    lab_compare_prev(ldl, "LDL (Bad Cholesterol)", "", ldl_targ)
+    lab_compare_prev(hdl, "HDL (Good Cholesterol)", hdl_targ, "")
+
+    lab_table([total,hdl,ldl,nonhdl],5)
   end
+
 
   def bloodpressure_dump()
-    out_add("")
-    out_add("Blood Pressure Analysis")
-    out_add_line()
+    out_add_section("Blood Pressure Analysis")
+
     lab_table(["SBP", "DBP"],5)
   end
 
   def kidney_dump()
-    out_add("")
-    out_add("Kidney Function Analysis")
-    out_add_line()
+    out_add_section("Kidney Function Analysis")
+
     lab_table(["eGFR", "ACR", "Urine RBC"],5)
   end
 
   def liver_dump()
-    out_add("")
-    out_add("Liver Function Analysis")
-    out_add_line()
+    out_add_section("Liver Function Analysis")
+
     lab_table(["ALT", "AST", "ALP", "GGT"],5)
   end
 
-  def prostate_dump()
-    out_add("")
-    out_add("Prostate Analysis")
-    out_add_line()
-    lab_table(["PSA"],5)
+  # prostate screening dump
+  def prostate_dump
+    out_add_section("Prostate Analysis")
+
+    psa = "PSA"
+
+    # get psa target based on age
+    psa_targ = 3.0
+
+    # get previous psa value
+    # set limit for maximum rise based on time between
+    # last two measurements
+
+    # adjust target based on maximum rise
+
+    lab_compare_prev(psa, "Prostate Antigen", "", psa_targ)
+
+    lab_table([psa],5)
+
   end
 
   # generate the output report
@@ -687,8 +926,14 @@ class HealthStatus
   # we can now analyze, summarize, and make recommendations
   def report_dump()
     curdate = @date.strftime('%b %d, %Y')
-    out_add("Health Status Update and Plan                            #{curdate}")
-    out_add_line()
+    out_add_section("Health Status Update and Plan                            #{curdate}")
+
+    # process everything but save it for later
+    # since we want the action plan to appear first
+
+    # turn on buffering
+    out_buffer(1)
+    out_add_section("Demographics")
     out_add("Age: #{@age}")
     out_add("Sex at Birth: #{@sex}")
     allergy_dump
@@ -705,8 +950,11 @@ class HealthStatus
     liver_dump
     prostate_dump
 
-    # lab_dump
+    # turn off buffering
+    out_buffer(0)
+
     action_dump
+    out_buffer_flush()
     return @outtext
   end
 end
