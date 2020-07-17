@@ -274,6 +274,7 @@ class HealthStatus
     return unless line =~ /^(\w\w\w \d\d, \d\d\d\d)\s+(\w+)\s+-\s+(.+)\z/
     date = Date.parse $1
     @Lifestyle[$2] = [date, $3]
+    lab_add($2, $3, date)
   end
 
   def famhx_dump()
@@ -328,6 +329,7 @@ class HealthStatus
       months = 36 unless months > 0
     end
     @Prevent[item] = [date, months]
+    lab_add(item, months, date)
   end
 
   # lab values are kept in hash of arrays
@@ -617,14 +619,38 @@ class HealthStatus
 
   def cvdrisk_dump()
     out_add_section("Cardiovascular Risk Analysis")
-    female = 1
-    age = 45
-    hdl = 1.0
-    totc = 5.0
-    sbp = 144
+    female = 0
+    if @sex == "F"
+      female = 1
+    end
+    hdl = lab_get("HDL",0)
+    totc = lab_get("Total Cholesterol",0)
+    sbp = lab_get("SBP",0)
     bptx = 0
+    # look for any medications with an indication of blood pressure
+    @Meds.each do |key, value|
+      indication = value[1]
+      if indication =~ /blood pressure/
+        bptx = 1
+      end
+    end
+
     smoking = 0
-    myrisk = FRS.new(female, age, hdl, totc, sbp, bptx, smoking)
+    tobacco_status = lab_get("Tobacco",0)
+    tobacco_status = tobacco_status.downcase
+    if tobacco_status =~ /\bsmoker\n/
+      smoking = 1
+    end
+    diabetes = 0
+    if @Conditions.key?("diabetes")
+      diabetes = 1
+    end
+    myrisk = FRS.new(female, @age, hdl, totc, sbp, bptx, smoking, diabetes)
+    risk = myrisk.risk_get
+    heart_age = myrisk.heart_age_get
+
+    out_add("10 year risk of cardiovascular disease is #{risk} %")
+    out_add("Equivalent heart age is #{heart_age} compared to current age: #{@age}")
   end
 
   def lab_compare_prev(name, desc, targ_above, targ_below)
