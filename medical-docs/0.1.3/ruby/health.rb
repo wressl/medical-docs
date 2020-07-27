@@ -1,17 +1,19 @@
 require 'clipboard'
 require 'date'
 require_relative 'frs'
+require_relative 'goal'
 
 class HealthStatus
   # make a look-up of health conditions to a standard form
   @@HealthCond = Hash.new
   @@HealthCond = {
-    "htn"      => "blood pressure",
-    "diabetes type 2" => "diabetes",
-    "ckd" => "low kidney function",
-    "gerd" => "acid reflux",
+    "atrial fib" => "afib",    
     "bph" => "enlarged prostate",
-    "atrial fib" => "afib"
+    "ckd" => "low kidney function",    
+    "diabetes type 2" => "diabetes",
+    "nafld" => "fatty liver",
+    "gerd" => "acid reflux",    
+    "htn"      => "blood pressure"
   }
   # lists of meds for common health conditions
   @@CondMeds = Hash.new
@@ -103,7 +105,7 @@ class HealthStatus
     # note that we do not have an indication yet
     indication = ""
     @Meds[name] = [route, indication];
-    puts "Found med: #{name}  (#{route})"
+    # puts "Found med: #{name}  (#{route})"
   end
 
   # parse line of active medication
@@ -235,7 +237,7 @@ class HealthStatus
     # map to a standard name if available
     if @@HealthCond.key?(name)
       nname = @@HealthCond[name]
-      puts "Mapped #{name} to #{nname}"
+      # puts "Mapped #{name} to #{nname}"
       name = nname
     end
     # @Conditions[name] = $2.strip
@@ -243,7 +245,7 @@ class HealthStatus
     # for a patient facing report
     # will just remove for now
     @Conditions[name] = " "
-    puts "Found history: #{name}  (#{$2})"
+    # puts "Found history: #{name}  (#{$2})"
   end
 
   def allergy_dump()
@@ -292,21 +294,33 @@ class HealthStatus
     date = Date.parse $1
     remainder = $2
 
-    puts "Remainder is (#{remainder})"
+    # puts "Remainder is (#{remainder})"
     # keep track of repeat interval in months
     # 0 means no repeat
     months = 0
     if remainder =~ /repeat in (\d+)\s+(\w+)/
-      puts "Matched (#{$1}) and (#{$2})"
+      # puts "Matched (#{$1}) and (#{$2})"
       months = $1.to_i
       if $2 =~ /year/
         months *= 12
       end
     end
-    puts "Months is #{months}"
+    # puts "Months is #{months}"
+    if remainder != ""
+      item = remainder
+    end
+    if remainder =~ /AAA\s+[sS]creening/
+      item = "AAA Screening"
+    end
     if remainder =~ /Fibroscan/
       item = "Fatty Liver Scan"
       months = 36 unless months > 0
+
+      # if fatty liver isn't listed as a condition
+      if !condition?("fatty liver")
+        # make it one
+        @Conditions["fatty liver"] = "Presumed from liver scan history"
+      end
     end
     if remainder =~ /Influenza/
       item = "Flu Vaccine"
@@ -336,7 +350,7 @@ class HealthStatus
   # each item of the array is an array:
   # [value, date]
   def lab_add(name, value, date)
-    puts "Adding Lab: #{name} #{value} #{date}"
+    # puts "Adding Lab: #{name} #{value} #{date}"
     if !@LabValues.key?(name)
       @LabValues[name] = Array.new
     end
@@ -355,6 +369,13 @@ class HealthStatus
       end
     end
     return retval
+  end
+
+  def lab_exists?(name)
+    if @LabValues.key?(name)
+      return true
+    end
+    return false
   end
 
   def lab_date_get(name, index)
@@ -472,6 +493,10 @@ class HealthStatus
   def parse_status(my_input)
     section = ""
     my_input.each_line do |line|
+      # need to switch encoding on windows
+      if (line.encoding == "UTF-16LE")
+        line = line.encode("ASCII", "UTF-16LE", undef: :replace)
+      end
       line = line.strip
       case line
       when /^Active Medications:/
@@ -537,13 +562,17 @@ class HealthStatus
         if line =~ /^Health Status Update/
           @date  = line[/\bDate:\s+(\w\w\w \d\d, \d\d\d\d)/, 1]
           @date = Date.parse @date
-          puts "Date is #{@date}"
+          # puts "Date is #{@date}"
         elsif line =~ /^Age:/
-          @age  = line[/\b(\d+)\z/, 1]
-          puts "Age is #{@age}"
+          @age  = line[/\b(\d+)\s+Yr\z/, 1]
+          # puts "Age is #{@age}"
         elsif line =~ /^Sex at Birth:/
           @sex  = line[/\b(\w+)\z/, 1]
-          puts "Sex is #{@sex}"
+          # puts "Sex is #{@sex}"
+        elsif line =~ /^Birthdate:/
+          @dob  = line[/\bBirthdate:\s+(\w\w\w \d\d, \d\d\d\d)/, 1]
+          @dob = Date.parse @dob
+          # puts "Birthdate is #{@dob}"
         end
       end
     end
@@ -554,7 +583,7 @@ class HealthStatus
   def out_buffer(buffer)
     @outbuffer = buffer
   end
-  
+
   def out_buffer_flush()
     @outtext << "#{@outbuffer_text}\n"
   end
@@ -592,7 +621,7 @@ class HealthStatus
   # which is an allied health professional who can help
   # with lifestyle, weight loss, and diabetes management including foot exams
   def hmn_book(topic)
-    puts "booking hmn for #{topic}"
+    # puts "booking hmn for #{topic}"
     if @hmn_topics == ""
       @hmn_topics = topic
     else
@@ -943,7 +972,7 @@ class HealthStatus
     out_add_section("Prostate Analysis")
 
     psa = "PSA"
-
+ 
     # get psa target based on age
     psa_targ = 3.0
 
@@ -957,6 +986,36 @@ class HealthStatus
 
     lab_table([psa],5)
 
+  end
+
+  def goals_dump
+    out_add_section("Preventative Health Goals")
+
+    # create a set of health goals
+    @Goals = Goals.new(self)
+    
+    # set a future date to check goals against to ensure we are taking action
+    # so the goals remain met until our next check in one year
+    goaldate = @date + 365
+    @Goals.date_set(goaldate)
+    @Goals.check
+  end
+
+  def age_get(date)
+    # should really based age on data passed
+    age = date.year - @dob.year - ((date.month > @dob.month || (date.month == @dob.month && date.day >= @dob.day)) ? 0 : 1)
+    return age
+  end
+
+  def sex_get
+    return @sex
+  end
+
+  def condition?(name)
+    if @Conditions.key?(name)
+      return true
+    end
+    return false
   end
 
   # generate the output report
@@ -990,6 +1049,8 @@ class HealthStatus
     liver_dump
     prostate_dump
 
+    goals_dump
+
     # turn off buffering
     out_buffer(0)
 
@@ -999,7 +1060,8 @@ class HealthStatus
   end
 end
 
+puts "Generating Health Status Report back into the clipboard"
+
 status = HealthStatus.new(Clipboard.paste)
 report = status.report_dump
-
 Clipboard.copy(report)

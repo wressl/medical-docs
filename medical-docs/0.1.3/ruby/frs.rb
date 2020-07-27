@@ -99,7 +99,7 @@ class FRS
     # actually don't use diabetes for points
     # considered CVD equivalent...
 
-    puts "Total Points is #{points}"
+    # puts "Total Points is #{points}"
 
     # get the risk
     risk_index = [[points + 3, 0].max, 24].min
@@ -119,7 +119,7 @@ class FRS
 
     @risk = "#{rover}#{@risk}"
     @heart_age = "#{hover}#{@heart_age}"
-    puts "CVD Risk is #{@risk} % and heart age is #{@heart_age} years"
+    # puts "CVD Risk is #{@risk} % and heart age is #{@heart_age} years"
 
   end
   def risk_get()
