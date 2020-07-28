@@ -2,6 +2,7 @@ require 'clipboard'
 require 'date'
 require_relative 'frs'
 require_relative 'goal'
+require_relative 'labs'
 
 class HealthStatus
   # make a look-up of health conditions to a standard form
@@ -58,7 +59,7 @@ class HealthStatus
 
   # initialize report
   def initialize(my_input)
-    @LabValues = Hash.new
+    @Labs = Labs.new
     @Meds = Hash.new
     @Conditions = Hash.new
     @Allergies = Array.new
@@ -240,11 +241,14 @@ class HealthStatus
       # puts "Mapped #{name} to #{nname}"
       name = nname
     end
-    # @Conditions[name] = $2.strip
+    # include the details for now
+    @Conditions[name] = $2.strip
+    # alternative:
     # most details seem to be irrelevant here
     # for a patient facing report
     # will just remove for now
-    @Conditions[name] = " "
+    # @Conditions[name] = " "
+
     # puts "Found history: #{name}  (#{$2})"
   end
 
@@ -346,46 +350,21 @@ class HealthStatus
     lab_add(item, months, date)
   end
 
-  # lab values are kept in hash of arrays
-  # each item of the array is an array:
-  # [value, date]
+  # wrappers for lab access
   def lab_add(name, value, date)
-    # puts "Adding Lab: #{name} #{value} #{date}"
-    if !@LabValues.key?(name)
-      @LabValues[name] = Array.new
-    end
-    @LabValues[name] << [value, date]
-  end
-
-  # labs are added in reverse chronically order
-  # so index 0 is the most recent
-  # index 1 is the second most recent and so on
-  # if the index doesn't exist, will return ""
-  def lab_get(name, index)
-    retval = ""
-    if @LabValues.key?(name)
-      if !@LabValues[name][index].nil?
-        retval = @LabValues[name][index][0]
-      end
-    end
-    return retval
+    @Labs.add(name, value, date)
   end
 
   def lab_exists?(name)
-    if @LabValues.key?(name)
-      return true
-    end
-    return false
+    return @Labs.exists?(name)
+  end
+
+  def lab_get(name, index)
+    return @Labs.get(name, index)
   end
 
   def lab_date_get(name, index)
-    retval = ""
-    if @LabValues.key?(name)
-      if !@LabValues[name][index].nil?
-        retval = @LabValues[name][index][1]
-      end
-    end
-    return retval
+    return @Labs.date_get(name, index)
   end
 
   # generate a table of most recent lab values
@@ -446,7 +425,7 @@ class HealthStatus
     # print out the table
     # blank line before the table
     out_add("")
-    
+
     # print out the dates
     row = ""
     table.keys.sort.each do |key|
@@ -466,13 +445,6 @@ class HealthStatus
     }
   end
 
-  def lab_dump
-    @LabValues.each do |key, value|
-      puts "Key is #{key}"
-      @LabValues[key].each { |x| puts x }
-    end
-  end
-
   # parse lab values section
   def lab_parse(line)
     # lab names appear on a separate line followed by a colon
@@ -490,11 +462,15 @@ class HealthStatus
     end
   end
 
+  def windows?
+    (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+  end
+
   def parse_status(my_input)
     section = ""
     my_input.each_line do |line|
       # need to switch encoding on windows
-      if (line.encoding == "UTF-16LE")
+      if windows?
         line = line.encode("ASCII", "UTF-16LE", undef: :replace)
       end
       line = line.strip
@@ -678,8 +654,13 @@ class HealthStatus
     risk = myrisk.risk_get
     heart_age = myrisk.heart_age_get
 
-    out_add("10 year risk of cardiovascular disease is #{risk} %")
+    out_add("10 year estimated risk of cardiovascular disease is #{risk} %")
     out_add("Equivalent heart age is #{heart_age} compared to current age: #{@age}")
+    out_add("")
+    out_add("This is an estimated risk based on the Framingham Risk Score")
+    out_add("as used by the Canadian Cardiovascular Society.")
+    out_add("To understand more how your risk factors contribute to your score see:")
+    out_add("http://chd.bestsciencemedicine.com/calc2.html")
   end
 
   def lab_compare_prev(name, desc, targ_above, targ_below)
