@@ -23,9 +23,11 @@ class HealthStatus
     "afib" => ["apixaban", "carvedilol", "coumadin",
                "metoprolol", "propafenone"],
     "blood pressure" => ["amlodipine", "bisoprolol",
-                              "carvedilol", "hydrochlorothiazide",
-                              "irbesartan", "metoprolol", "olmesartan",
-                              "telmisartan","valsartan", "verapamil"],
+                         "captopril", "carvedilol", "enalapril", "fosinopril",
+                         "hydrochlorothiazide", "irbesartan",
+                         "lisinopril", "metoprolol", "olmesartan",
+                              "perindopril", "quinapril", "ramipril",
+                              "telmisartan", "trandolapril", "valsartan", "verapamil"],
     "diabetes" => ["empagliflozin", "metformin"],
     "enlarged prostate" => ["finasteride", "tamsulosin"],
     "high cholesterol" => ["atorvastatin", "evolocumab", "fluvastatin",
@@ -46,6 +48,7 @@ class HealthStatus
     "lovastatin"    => "mevacor",
     "pantoprazole"  => "pantoloc",
     "pravastatin"   => "pravachol",
+    "quinapril"     => "accupril",
     "rosuvastatin"  => "crestor",
     "salbutamol"    => "ventolin",
     "simvastatin"   => "zocor",
@@ -160,7 +163,7 @@ class HealthStatus
     end
   end
 
-  # Add single med to output stream  
+  # Add single med to output stream
   def med_single_dump(name)
     route = @Meds[name][0];
     indication = @Meds[name][1];
@@ -421,6 +424,7 @@ class HealthStatus
         cur_col += 1
       end
     end
+    lastcol = cur_col
 
     # print out the table
     # blank line before the table
@@ -430,17 +434,32 @@ class HealthStatus
     row = ""
     table.keys.sort.each do |key|
       date = key.strftime('%b %Y')
-      row = sprintf("%-20s%-10s",row,date)
+      row = sprintf("%-12s%-9s",row,date)
     end
+    row = sprintf("%-12s%-9s",row,"Normal")
     out_add(row)
 
     # then print the values for each lab
     names.each_with_index { |val, index|
       row = val
+      range = @Labs.normal_range(val)
+      colnum = 1
       table.keys.sort.each do |key|
         value = table[key]
-        row = sprintf("%-20s%-10s",row,value[index])
+        curval = value[index]
+        # add a marker if out of normal range
+        if curval != ""
+          if !@Labs.normal?(val, curval)
+            if colnum == lastcol
+              action_add("Discuss #{val} (#{curval}) is outside of expected range #{range}")
+            end
+            curval = "*#{curval}*"
+          end
+        end
+        row = sprintf("%-12s%-9s",row,curval)
+        colnum += 1
       end
+      row = sprintf("%-12s%-9s",row,range)
       out_add(row)
     }
   end
@@ -450,6 +469,20 @@ class HealthStatus
     # lab names appear on a separate line followed by a colon
     if line =~ /^([-\w\s]+):/
       @labname = $1
+      # shorten some long lab names so the tables
+      # print nicer
+      if @labname =~ /Hemoglobin A1C/
+        @labname = "A1C"
+      end
+      if @labname =~ /Fasting Glucose/
+        @labname = "Fasting"
+      end
+      if @labname =~ /Non-HDL Cholesterol/
+        @labname = "Non-HDL"
+      end
+      if @labname =~ /Total Cholesterol/
+        @labname = "Total Chol"
+      end
     end
     if line =~ /^([\.\d]+).*\s(\w\w\w \d\d, \d\d\d\d)\z/
       value = $1
@@ -541,9 +574,11 @@ class HealthStatus
           # puts "Date is #{@date}"
         elsif line =~ /^Age:/
           @age  = line[/\b(\d+)\s+Yr\z/, 1]
+          @Labs.age_set(@age)
           # puts "Age is #{@age}"
         elsif line =~ /^Sex at Birth:/
           @sex  = line[/\b(\w+)\z/, 1]
+          @Labs.sex_set(@sex)
           # puts "Sex is #{@sex}"
         elsif line =~ /^Birthdate:/
           @dob  = line[/\bBirthdate:\s+(\w\w\w \d\d, \d\d\d\d)/, 1]
@@ -629,7 +664,7 @@ class HealthStatus
       female = 1
     end
     hdl = lab_get("HDL",0)
-    totc = lab_get("Total Cholesterol",0)
+    totc = lab_get("Total Chol",0)
     sbp = lab_get("SBP",0)
     bptx = 0
     # look for any medications with an indication of blood pressure
@@ -824,8 +859,8 @@ class HealthStatus
 
   # diabetes dump
   def diabetes_dump
-    a1c = "Hemoglobin A1C"
-    fbg = "Fasting Glucose"
+    a1c = "A1C"
+    fbg = "Fasting"
 
     if @Conditions.key?("diabetes")
       out_add_section("Diabetes Analysis")
@@ -868,6 +903,7 @@ class HealthStatus
       fbg_msg = "Fasting sugar is unavailable"
       currentA1C  = lab_get(a1c,0)
       if (currentA1C != "")
+        currentA1C = currentA1C.to_f
         if (currentA1C < 6.0)
           a1c_msg = "Average sugar is normal (under 6.0)"
         elsif (currentA1C < 6.4)
@@ -878,11 +914,12 @@ class HealthStatus
           diabetic = 1;
         end
       end
-      currentFBG  = lab_get(fpg,0)
+      currentFBG  = lab_get(fbg,0)
       if (currentFBG != "")
-        if (currentFGB < 6.0)
+        currentFBG = currentFBG.to_f
+        if (currentFBG < 6.0)
           fbg_msg = "Fasting sugar is normal (under 6.0)"
-        elsif (currentA1C < 6.4)
+        elsif (currentFBG < 6.4)
           fbg_msg = "Fasting sugar is prediabetic (6.0 - 6.9)"
           prediabetic = 1;
         else
@@ -910,8 +947,8 @@ class HealthStatus
   def cholesterol_dump
     ldl = "LDL"
     hdl = "HDL"
-    total = "Total Cholesterol"
-    nonhdl = "Non-HDL Cholesterol"
+    total = "Total Chol"
+    nonhdl = "Non-HDL"
 
     out_add_section("Cholesterol Analysis")
 
@@ -953,17 +990,25 @@ class HealthStatus
     out_add_section("Prostate Analysis")
 
     psa = "PSA"
- 
-    # get psa target based on age
-    psa_targ = 3.0
 
     # get previous psa value
-    # set limit for maximum rise based on time between
-    # last two measurements
+    prev_val = lab_get("PSA",1)
+    if (prev_val != "")
+      last_date = lab_date_get("PSA", 0)
+      prev_date = lab_date_get("PSA", 1)
+      days = (last_date - prev_date).round(0)
+      rise = ((days*0.7)/365).round(1)
 
-    # adjust target based on maximum rise
+      # set limit for maximum rise based on time between
+      # last two measurements
+      limit = (prev_val.to_f + rise + 0.1).round(1)
+      out_add("Expecting maximum rise of #{rise} based on #{days} days between measurement")
 
-    lab_compare_prev(psa, "Prostate Antigen", "", psa_targ)
+      # adjust target based on maximum rise
+      @Labs.norm_override("PSA", "<#{limit}")
+    end
+
+    # lab_compare_prev(psa, "Prostate Antigen", "", psa_targ)
 
     lab_table([psa],5)
 
@@ -974,10 +1019,10 @@ class HealthStatus
 
     # create a set of health goals
     @Goals = Goals.new(self)
-    
+
     # set a future date to check goals against to ensure we are taking action
-    # so the goals remain met until our next check in one year
-    goaldate = @date + 365
+    # so the goals remain met until our next check in about one year
+    goaldate = @date + 330
     @Goals.date_set(goaldate)
     @Goals.check
   end
