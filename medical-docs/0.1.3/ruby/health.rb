@@ -300,7 +300,7 @@ class HealthStatus
     return unless line =~ /^(\w\w\w \d\d, \d\d\d\d)\s+(\w+.*)\z/
     date = Date.parse $1
     remainder = $2
-
+    value = ""
     # puts "Remainder is (#{remainder})"
     # keep track of repeat interval in months
     # 0 means no repeat
@@ -337,20 +337,25 @@ class HealthStatus
       item = "Colonoscopy"
       months = 120 unless months > 0
     end
-    if remainder =~ /FIT/
-      item = "Colon Cancer Screen (FIT)"
+    if remainder =~ /ASaP FIT/
+      item = "FIT"
       months = 24 unless months > 0
+      if remainder =~ /Positive/
+        value = "Pos"
+      else
+        value = "Neg"
+      end
     end
     if remainder =~ /Mammo/
       item = "Breast Cancer Screen (Mammogram)"
       months = 24 unless months > 0
     end
     if remainder =~ /PAP/
-      item = "Cervical Cancer Screen (PAP)"
+      item = "PAP"
       months = 36 unless months > 0
     end
     @Prevent[item] = [date, months]
-    lab_add(item, months, date)
+    lab_add(item, value, date)
   end
 
   # wrappers for lab access
@@ -484,12 +489,17 @@ class HealthStatus
         @labname = "Total Chol"
       end
     end
-    if line =~ /^([\.\d]+).*\s(\w\w\w \d\d, \d\d\d\d)\z/
+    if line =~ /^([\w\.\d]+).*\s(\w\w\w \d\d, \d\d\d\d)\z/
       value = $1
       date = Date.parse $2
       if @labname == ""
         puts "Got lab value #{value} and date #{date} but no lab name"
       else
+        if value == "Negative"
+          value = "Neg"
+        elsif value == "Positive"
+          value = "Pos"
+        end
         lab_add(@labname, value, date)
       end
     end
@@ -985,31 +995,61 @@ class HealthStatus
     lab_table(["ALT", "AST", "ALP", "GGT"],5)
   end
 
+  # colon screening dump
+  def colon_dump
+    out_add_section("Colon Cancer Screening Analysis")
+    fit = "FIT"
+    # table will generate an action if last value out of range
+    lab_table([fit],5)
+  end
+  
   # prostate screening dump
   def prostate_dump
     out_add_section("Prostate Analysis")
 
     psa = "PSA"
 
-    # get previous psa value
-    prev_val = lab_get("PSA",1)
-    if (prev_val != "")
-      last_date = lab_date_get("PSA", 0)
-      prev_date = lab_date_get("PSA", 1)
-      days = (last_date - prev_date).round(0)
-      rise = ((days*0.7)/365).round(1)
+    # check if in range based on the default range for age
+    last_val = lab_get(psa,0)
+    if last_val != ""
+      norm_range = @Labs.normal_range(psa)
+      if @Labs.normal?(psa, last_val)
+        out_add("PSA (#{last_val}) is within expected range for age: #{norm_range}")
 
-      # set limit for maximum rise based on time between
-      # last two measurements
-      limit = (prev_val.to_f + rise + 0.1).round(1)
-      out_add("Expecting maximum rise of #{rise} based on #{days} days between measurement")
+        # since we are in range based on age, try a tighter range
+        # based on rise
 
-      # adjust target based on maximum rise
-      @Labs.norm_override("PSA", "<#{limit}")
+        # get previous psa value
+        prev_val = lab_get(psa,1)
+        if (prev_val != "")
+          last_date = lab_date_get(psa, 0)
+          prev_date = lab_date_get(psa, 1)
+          days = (last_date - prev_date).round(0)
+          rise = ((days*0.7)/365).round(1)
+
+          # set limit for maximum rise based on time between
+          # last two measurements
+          limit = (prev_val.to_f + rise + 0.1).round(1)
+          out_add("Expecting maximum rise of #{rise} based on #{days} days between measurement")
+
+          # adjust target based on maximum rise
+          @Labs.norm_override(psa, "<#{limit}")
+
+          norm_range = @Labs.normal_range(psa)
+          if @Labs.normal?(psa, last_val)
+            out_add("PSA (#{last_val}) is within expected increase: #{norm_range}")
+          else
+            out_add("PSA (#{last_val}) is outside expected increase: #{norm_range}")
+          end
+        end
+      else
+        out_add("PSA (#{last_val}) is outside expected range for age: #{norm_range}")
+      end
     end
 
     # lab_compare_prev(psa, "Prostate Antigen", "", psa_targ)
 
+    # table will generate an action if last value out of range
     lab_table([psa],5)
 
   end
@@ -1074,7 +1114,8 @@ class HealthStatus
     kidney_dump
     liver_dump
     prostate_dump
-
+    colon_dump
+    
     goals_dump
 
     # turn off buffering

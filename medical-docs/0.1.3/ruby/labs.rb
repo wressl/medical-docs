@@ -10,7 +10,7 @@ class Labs
     units_set("Height", "cm")
     units_set("Weight", "kg")
 
-    norm_set("FIT", "Negative")
+    norm_set("FIT", "Neg")
 
     units_set("A1C", "%")
     norm_set("A1C", "<6.5")
@@ -255,7 +255,26 @@ class Labs
     if !@LabValues.key?(name)
       @LabValues[name] = Array.new
     end
-    @LabValues[name] << [value, date]
+    # find index to insert at based on date
+    # stored in reverse chronological order
+    index = 0
+    @LabValues[name].each { |entry|
+      last_date = entry[1]
+      if date == last_date
+        # strange ... two entries for the same date
+        last_val = entry[0]
+        if last_val != value
+          puts "Labs same date, different values for #{name}: #{date} #{value} vs #{last_val}"
+        else
+          # puts "Labs same date, same value for #{name}: #{date} #{value} vs #{last_val}"
+        end
+        # don't insert this value, generally not useful
+        return
+      elsif date < last_date
+        index += 1
+      end
+    }
+    @LabValues[name].insert(index, [value, date])
   end
 
   # labs are added in reverse chronically order
