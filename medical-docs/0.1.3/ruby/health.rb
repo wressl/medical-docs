@@ -8,13 +8,14 @@ class HealthStatus
   # make a look-up of health conditions to a standard form
   @@HealthCond = Hash.new
   @@HealthCond = {
-    "atrial fib" => "afib",    
+    "atrial fib" => "afib",
     "bph" => "enlarged prostate",
-    "ckd" => "low kidney function",    
+    "ckd" => "low kidney function",
     "diabetes type 2" => "diabetes",
     "nafld" => "fatty liver",
-    "gerd" => "acid reflux",    
-    "htn"      => "blood pressure"
+    "gerd" => "acid reflux",
+    "htn"  => "blood pressure",
+    "dyslipidemia"      => "high cholesterol"
   }
   # lists of meds for common health conditions
   @@CondMeds = Hash.new
@@ -76,6 +77,9 @@ class HealthStatus
     @labname = ""
     @hmn_topics = ""
     @hmn_recommended = 0
+    @chc_topics = ""
+    @chc_recommended = 0
+    @ldl_targ = 2.0
     parse_status(my_input);
   end
 
@@ -236,16 +240,35 @@ class HealthStatus
   end
 
   def mhx_parse(line)
-    return unless line =~ /^([^-]+)-(.+)$/
+    return unless line =~ /^([^-]+)/
     name = $1.strip.downcase
+
+    # remove leading date if present
+    if name =~ /^\w\w\w \d\d, \d\d\d\d\s+(.+)\z/
+      name = $1
+    end
+
     # map to a standard name if available
+    puts "Trying to map #{name}"
     if @@HealthCond.key?(name)
       nname = @@HealthCond[name]
-      # puts "Mapped #{name} to #{nname}"
+      puts "Mapped #{name} to #{nname}"
       name = nname
     end
+
+    details = ""
+    if line =~ /^([^-]+)-(.+)$/
+      details = $2.strip
+    end
+
     # include the details for now
-    @Conditions[name] = $2.strip
+    @Conditions[name] = details
+    if details =~ /[T|t]arget\s+([\d\.]+)/
+      target = $1
+      if name == "high cholesterol"
+        @ldl_targ = target.to_f
+      end
+    end
     # alternative:
     # most details seem to be irrelevant here
     # for a patient facing report
@@ -336,6 +359,7 @@ class HealthStatus
     if remainder =~ /Colonoscopy/
       item = "Colonoscopy"
       months = 120 unless months > 0
+      value = months
     end
     if remainder =~ /ASaP FIT/
       item = "FIT"
@@ -347,12 +371,18 @@ class HealthStatus
       end
     end
     if remainder =~ /Mammo/
-      item = "Breast Cancer Screen (Mammogram)"
+      item = "Mammo"
       months = 24 unless months > 0
     end
-    if remainder =~ /PAP/
+    if remainder =~ /Pap/
       item = "PAP"
       months = 36 unless months > 0
+    end
+    if remainder =~ /Shingrix/
+      item = "Shingrix"
+      if remainder =~ /1st/
+        months = 6
+      end
     end
     @Prevent[item] = [date, months]
     lab_add(item, value, date)
@@ -659,10 +689,34 @@ class HealthStatus
     end
   end
 
+  # keep track of recommendations to consult
+  # community health centre
+  def chc_book(topic)
+    # puts "booking hmn for #{topic}"
+    if @chc_topics == ""
+      @chc_topics = topic
+    else
+      @chc_topics = "#{@chc_topics}, #{topic}"
+    end
+    @chc_recommended = 1
+  end
+
+  # add hmn recommendations to actions
+  def chc_dump
+    if (@chc_recommended == 1)
+      action_add("Book with Community Health Centre for:")
+      action_add("  #{@chc_topics}")
+      action_add("  Northwest: #109 1829 Ranchlands Blvd NW 403-943-9700")
+      action_add("  Thornhill: 6617 Centre St N 403-944-7500")
+      action_add("  or call 811 for your nearest location")
+    end
+  end
+
   # dump the action plan
   def action_dump()
     out_add_section("Action Plan")
     hmn_dump
+    chc_dump
 
     @actionplan.each { |line| out_add(line) }
   end
@@ -675,7 +729,14 @@ class HealthStatus
     end
     hdl = lab_get("HDL",0)
     totc = lab_get("Total Chol",0)
+    if hdl == ""
+      out_add("No cholesterol readings available")
+    end
+
     sbp = lab_get("SBP",0)
+    if sbp == ""
+      out_add("No blood pressure readings available")
+    end
     bptx = 0
     # look for any medications with an indication of blood pressure
     @Meds.each do |key, value|
@@ -687,9 +748,14 @@ class HealthStatus
 
     smoking = 0
     tobacco_status = lab_get("Tobacco",0)
+    if tobacco_status == ""
+      out_add("No smoking status available")
+    end
+
     tobacco_status = tobacco_status.downcase
-    if tobacco_status =~ /\bsmoker\n/
+    if tobacco_status =~ /\bsmoker\b/
       smoking = 1
+      puts "smoker"
     end
     diabetes = 0
     if @Conditions.key?("diabetes")
@@ -795,6 +861,9 @@ class HealthStatus
   def bmi_dump()
     cur_ht_cm = lab_get("Height",0)
     cur_wt_kg = lab_get("Weight",0)
+    return unless cur_ht_cm != ""
+    return unless cur_wt_kg != ""
+
     cur_date  = lab_date_get("Weight",0)
     cur_date  = cur_date.strftime('%b %Y')
 
@@ -967,7 +1036,7 @@ class HealthStatus
     hdl_targ = 1.4
 
     if @Conditions.key?("high cholesterol")
-      ldl_targ = 2.0
+      ldl_targ = @ldl_targ
     end
 
     lab_compare_prev(ldl, "LDL (Bad Cholesterol)", "", ldl_targ)
@@ -1005,6 +1074,8 @@ class HealthStatus
   
   # prostate screening dump
   def prostate_dump
+    return unless @sex == "M"
+
     out_add_section("Prostate Analysis")
 
     psa = "PSA"

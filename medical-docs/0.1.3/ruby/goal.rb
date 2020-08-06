@@ -254,6 +254,10 @@ class Goal_Tetanus < Goal
   def initialize (pt)
     super(pt, "Tetanus", 10, 24)
   end
+  def msg_not_met
+    msg_out("is NOT met")
+    @pt.chc_book("#{@name} vaccine")
+  end
 end
 
 
@@ -261,6 +265,10 @@ end
 class Goal_Pneumovax < Goal
   def initialize (pt)
     super(pt, "Pneumovax", "", 65)
+  end
+  def msg_not_met
+    msg_out("is NOT met")
+    @pt.chc_book("#{@name} (Pneumonia vaccine)")
   end
 end
 
@@ -282,6 +290,7 @@ end
 class Goal_PAP < Goal
   def initialize (pt)
     super(pt, "PAP Smear", 3, 25, 69, "F")
+    @lab = "PAP"
   end
 end
 
@@ -289,6 +298,7 @@ end
 class Goal_Mammo < Goal
   def initialize (pt)
     super(pt, "Mammography", 2, 50, 74, "F")
+    @lab = "Mammo"
   end
 end
 
@@ -310,7 +320,7 @@ class Goal_FIT < Goal
       @name = name
       value = @pt.lab_get(@lab,0)
       # convert months to days
-      @years = value.to_i
+      @years = value.to_i / 12
       @frequency = @years * 365.25
       @inclusion = "Repeat in #{@years} years"
     end
@@ -343,6 +353,7 @@ end
 class Goal_Cholesterol < Goal
   def initialize (pt)
     super(pt, "Cholesterol", 5, 40, 74)
+    @lab = "LDL"
   end
 end
 
