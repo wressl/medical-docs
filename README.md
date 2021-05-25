@@ -27,8 +27,8 @@ can maintain on their own.
 
 1. Install [espanso](https://espanso.org)
 
-2. Install medical-docs package
-     `espanso install medical-docs`
+2. Install emergency-medicine-docs package
+     `espanso install emergency-medicine-docs`
 
 3. Add the following to your default.yml
    Hint: found in the *Config* directory as listed by `espanso path`
